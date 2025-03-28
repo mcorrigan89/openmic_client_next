@@ -58,6 +58,14 @@ export type CreateUserResponseBody = {
     user: UserDto;
 };
 
+export type DeleteTimeslotMarkerRequestBody = {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    readonly $schema?: string;
+    timeslot_marker_id: string;
+};
+
 export type ErrorDetail = {
     /**
      * Where the error occurred, e.g. 'body.items[3].tags' or 'path.thing-id'
@@ -113,6 +121,7 @@ export type EventDto = {
     event_type: string;
     id: string;
     start_time: string;
+    time_markers: Array<TimesMarkerDto> | null;
     time_slots: Array<TimeslotDto> | null;
 };
 
@@ -133,9 +142,25 @@ export type SessionDto = {
     token: string;
 };
 
+export type SetTimeslotMarkerRequestBody = {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    readonly $schema?: string;
+    slot_index: number;
+    time_display: string;
+};
+
+export type TimesMarkerDto = {
+    slot_index: number;
+    time_display: string;
+};
+
 export type TimeslotDto = {
     artist: ArtistDto;
     id: string;
+    song_count: number;
+    time_display: string;
 };
 
 export type UpdateEventRequestBody = {
@@ -307,6 +332,31 @@ export type CreateEventResponses = {
 
 export type CreateEventResponse = CreateEventResponses[keyof CreateEventResponses];
 
+export type GetCurrentEventData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/event/now';
+};
+
+export type GetCurrentEventErrors = {
+    /**
+     * Error
+     */
+    default: ErrorModel;
+};
+
+export type GetCurrentEventError = GetCurrentEventErrors[keyof GetCurrentEventErrors];
+
+export type GetCurrentEventResponses = {
+    /**
+     * OK
+     */
+    200: EventDto;
+};
+
+export type GetCurrentEventResponse = GetCurrentEventResponses[keyof GetCurrentEventResponses];
+
 export type AddArtistToEventData = {
     body: AddArtistToEventEventRequestBody;
     path: {
@@ -360,6 +410,60 @@ export type RemoveArtistFromEventResponses = {
 };
 
 export type RemoveArtistFromEventResponse = RemoveArtistFromEventResponses[keyof RemoveArtistFromEventResponses];
+
+export type DeleteTimeslotData = {
+    body: DeleteTimeslotMarkerRequestBody;
+    path: {
+        event_id: string;
+    };
+    query?: never;
+    url: '/event/{event_id}/timeslot';
+};
+
+export type DeleteTimeslotErrors = {
+    /**
+     * Error
+     */
+    default: ErrorModel;
+};
+
+export type DeleteTimeslotError = DeleteTimeslotErrors[keyof DeleteTimeslotErrors];
+
+export type DeleteTimeslotResponses = {
+    /**
+     * OK
+     */
+    200: EventDto;
+};
+
+export type DeleteTimeslotResponse = DeleteTimeslotResponses[keyof DeleteTimeslotResponses];
+
+export type SetTimeslotData = {
+    body: SetTimeslotMarkerRequestBody;
+    path: {
+        event_id: string;
+    };
+    query?: never;
+    url: '/event/{event_id}/timeslot';
+};
+
+export type SetTimeslotErrors = {
+    /**
+     * Error
+     */
+    default: ErrorModel;
+};
+
+export type SetTimeslotError = SetTimeslotErrors[keyof SetTimeslotErrors];
+
+export type SetTimeslotResponses = {
+    /**
+     * OK
+     */
+    200: EventDto;
+};
+
+export type SetTimeslotResponse = SetTimeslotResponses[keyof SetTimeslotResponses];
 
 export type DeleteEventData = {
     body?: never;
@@ -615,5 +719,5 @@ export type UpdateUserResponses = {
 export type UpdateUserResponse = UpdateUserResponses[keyof UpdateUserResponses];
 
 export type ClientOptions = {
-    baseUrl: 'http://localhost:3001' | (string & {});
+    baseUrl: 'https://api-dev.openmicmpls.com' | (string & {});
 };

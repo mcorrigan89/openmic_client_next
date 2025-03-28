@@ -71,6 +71,7 @@ export default async function AdminEventPage({ params }: EventPageProps) {
       <div>
         {eventData.time_slots ? (
           <AdminListComponent
+            markers={eventData.time_markers ?? []}
             timeslots={eventData.time_slots}
             eventId={eventData.id}
           />
