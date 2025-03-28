@@ -42,6 +42,7 @@ function EventComponent({ event }: EventComponentProps) {
 export default async function Home() {
   const { data, error } = await getEvents();
   if (error) {
+    console.error(error);
     return <div>Error loading events</div>;
   }
 
