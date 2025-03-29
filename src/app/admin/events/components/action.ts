@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-form/nextjs";
 import { formOpts } from "./shared";
 import { revalidatePath } from "next/cache";
-import { createEvent } from "@/client";
+import { createEvent, deleteEvent } from "@/client";
 
 const serverValidate = createServerValidate({
   ...formOpts,
@@ -18,6 +18,7 @@ const serverValidate = createServerValidate({
 });
 
 export async function addEventAction(prev: unknown, formData: FormData) {
+  console.log("WAT");
   try {
     await serverValidate(formData);
   } catch (e) {
@@ -32,12 +33,22 @@ export async function addEventAction(prev: unknown, formData: FormData) {
   await createEvent({
     body: {
       event_type: formData.get("type") as string,
-      start_time: "",
-      end_time: "",
+      start_time: "2025-03-24T17:00:00Z",
+      end_time: "2025-03-24T23:00:00Z",
     },
   });
 
   revalidatePath("/admin/artists");
 
   // Your form has successfully validated!
+}
+
+export async function deleteEventAction(eventId: string) {
+  await deleteEvent({
+    path: {
+      id: eventId,
+    },
+  });
+
+  revalidatePath("/admin/artists");
 }

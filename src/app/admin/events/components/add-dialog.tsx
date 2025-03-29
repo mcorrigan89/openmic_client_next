@@ -14,14 +14,8 @@ import { useStore } from "@tanstack/react-store";
 import { addEventAction } from "./action";
 import { formOpts } from "./shared";
 import { Field, Label } from "@/components/fieldset";
-
-import {
-  Dropdown,
-  DropdownButton,
-  DropdownItem,
-  DropdownMenu,
-} from "@/components/dropdown";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { Select } from "@/components/select";
+import { DatePicker } from "./date-picker";
 
 export function AddEventDialog() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +37,7 @@ export function AddEventDialog() {
   return (
     <>
       <Button type="button" onClick={() => setIsOpen(true)}>
-        Add New Artist
+        Add New Event
       </Button>
       <Dialog open={isOpen} onClose={setIsOpen}>
         <form action={action as never} onSubmit={() => form.handleSubmit()}>
@@ -60,31 +54,22 @@ export function AddEventDialog() {
             <form.Field name="type">
               {(field) => {
                 return (
-                  <Field>
-                    <Label>Artist Title</Label>
-                    {/* <Input
-                      name="title"
-                      type="text"
+                  <Field className="flex">
+                    <Label>Event</Label>
+                    <Select
+                      name="type"
                       value={field.state.value ?? ""}
                       onChange={(e) => field.handleChange(e.target.value)}
-                    /> */}
-                    <Dropdown>
-                      <DropdownButton outline>
-                        Event Type
-                        <ChevronDownIcon />
-                      </DropdownButton>
-                      <DropdownMenu>
-                        <DropdownItem
-                          onClick={() => field.handleChange("OPEN_MIC")}
-                        >
-                          Open Mic
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
+                    >
+                      <option value="OPEN_MIC">Open Mic</option>
+                      <option value="ARTIST_SHOWCASE">Showcase</option>
+                    </Select>
                   </Field>
                 );
               }}
             </form.Field>
+
+            <DatePicker />
 
             <form.Subscribe
               selector={(formState) => [
