@@ -99,7 +99,7 @@ export function TableRow({
   href?: string;
   target?: string;
   title?: string;
-} & React.ComponentPropsWithoutRef<"tr">) {
+} & React.ComponentProps<"tr">) {
   const { striped } = useContext(TableContext);
 
   return (

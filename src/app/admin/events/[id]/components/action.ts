@@ -6,6 +6,7 @@ import {
   removeArtistFromEvent,
   setTimeslot,
   deleteTimeslot,
+  setSortOrder,
 } from "@/client";
 import { revalidatePath } from "next/cache";
 
@@ -68,4 +69,22 @@ export async function deleteTimeslotMarkerAction(
   });
 
   revalidatePath(`/admin/events/${eventId}`);
+}
+
+export async function setSortOrderAction(
+  eventId: string,
+  currentTimeSlotId: string,
+  beforeTimeSlotId: string
+) {
+  await setSortOrder({
+    path: {
+      event_id: eventId,
+    },
+    body: {
+      before_slot_id: beforeTimeSlotId,
+      current_slot_id: currentTimeSlotId,
+    },
+  });
+
+  // revalidatePath(`/admin/events/${eventId}`);
 }
