@@ -24,6 +24,72 @@ import {
   DropdownMenu,
 } from "@/components/dropdown";
 
+interface AdminListItemComponentProps {
+  eventId: string;
+  idx: number;
+  timeDisplay: string;
+  timeslot: TimeslotDto;
+  markerId?: string;
+  setTimeForTimeslot: (time: string, slotIndex: number) => void;
+  deleteTimeslotMarker: (timeslotMarkerId?: string) => void;
+}
+
+function ListItem({
+  eventId,
+  idx,
+  timeslot,
+  timeDisplay,
+  markerId,
+  setTimeForTimeslot,
+  deleteTimeslotMarker,
+}: AdminListItemComponentProps) {
+  return (
+    <TableRow key={timeslot.id}>
+      <TableCell className="font-medium">{timeslot.artist.title}</TableCell>
+      <TableCell className="hidden md:table-cell">
+        {timeslot.artist.title}
+      </TableCell>
+      <TableCell className="hidden md:table-cell">
+        {format(timeslot.time_display, "h:mm")}
+      </TableCell>
+      <TableCell>
+        <Dropdown>
+          <DropdownButton outline>
+            {timeDisplay}
+            <ChevronDownIcon />
+          </DropdownButton>
+          <DropdownMenu>
+            <DropdownItem onClick={() => setTimeForTimeslot("7ish", idx)}>
+              7ish
+            </DropdownItem>
+            <DropdownItem onClick={() => setTimeForTimeslot("8ish", idx)}>
+              8ish
+            </DropdownItem>
+            <DropdownItem onClick={() => setTimeForTimeslot("9ish", idx)}>
+              9ish
+            </DropdownItem>
+            <DropdownItem onClick={() => setTimeForTimeslot("10ish", idx)}>
+              10ish
+            </DropdownItem>
+            <DropdownItem onClick={() => deleteTimeslotMarker(markerId)}>
+              Delete
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </TableCell>
+      <TableCell className="text-zinc-500">
+        <Button
+          onClick={() => removeArtistFromList(timeslot.artist, eventId)}
+          outline
+          className="cursor-pointer"
+        >
+          <XMarkIcon />
+        </Button>
+      </TableCell>
+    </TableRow>
+  );
+}
+
 interface AdminListComponentProps {
   eventId: string;
   markers: TimesMarkerDto[];
@@ -69,57 +135,16 @@ export function AdminListComponent({
       </TableHead>
       <TableBody>
         {timeslots.map((timeslot, idx) => (
-          <TableRow key={timeslot.id}>
-            <TableCell className="font-medium">
-              {timeslot.artist.title}
-            </TableCell>
-            <TableCell className="hidden md:table-cell">
-              {timeslot.artist.title}
-            </TableCell>
-            <TableCell className="hidden md:table-cell">
-              {format(timeslot.time_display, "h:mm")}
-            </TableCell>
-            <TableCell>
-              <Dropdown>
-                <DropdownButton outline>
-                  {timeDisplay(idx)}
-                  <ChevronDownIcon />
-                </DropdownButton>
-                <DropdownMenu>
-                  <DropdownItem onClick={() => setTimeForTimeslot("7ish", idx)}>
-                    7ish
-                  </DropdownItem>
-                  <DropdownItem onClick={() => setTimeForTimeslot("8ish", idx)}>
-                    8ish
-                  </DropdownItem>
-                  <DropdownItem onClick={() => setTimeForTimeslot("9ish", idx)}>
-                    9ish
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={() => setTimeForTimeslot("10ish", idx)}
-                  >
-                    10ish
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={() =>
-                      deleteTimeslotMarker(markerFromIndex(idx)?.id)
-                    }
-                  >
-                    Delete
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </TableCell>
-            <TableCell className="text-zinc-500">
-              <Button
-                onClick={() => removeArtistFromList(timeslot.artist, eventId)}
-                outline
-                className="cursor-pointer"
-              >
-                <XMarkIcon />
-              </Button>
-            </TableCell>
-          </TableRow>
+          <ListItem
+            key={timeslot.id}
+            eventId={eventId}
+            idx={idx}
+            timeslot={timeslot}
+            timeDisplay={timeDisplay(idx)}
+            markerId={markerFromIndex(idx)?.id}
+            setTimeForTimeslot={setTimeForTimeslot}
+            deleteTimeslotMarker={deleteTimeslotMarker}
+          />
         ))}
       </TableBody>
     </Table>
