@@ -3,6 +3,8 @@ import { Divider } from "@/components/divider";
 import { Header } from "@/components/header";
 import { format } from "date-fns";
 
+export const dynamic = "force-dynamic";
+
 interface EventComponentProps {
   event: EventDto;
 }
