@@ -86,5 +86,5 @@ export async function setSortOrderAction(
     },
   });
 
-  // revalidatePath(`/admin/events/${eventId}`);
+  revalidatePath(`/admin/events/${eventId}`);
 }
