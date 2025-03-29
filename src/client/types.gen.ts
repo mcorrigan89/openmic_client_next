@@ -142,6 +142,15 @@ export type SessionDto = {
     token: string;
 };
 
+export type SetSortOrderRequestBody = {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    readonly $schema?: string;
+    before_slot_id: string;
+    current_slot_id: string;
+};
+
 export type SetTimeslotMarkerRequestBody = {
     /**
      * A URL to the JSON Schema for this object.
@@ -152,6 +161,7 @@ export type SetTimeslotMarkerRequestBody = {
 };
 
 export type TimesMarkerDto = {
+    id: string;
     slot_index: number;
     time_display: string;
 };
@@ -410,6 +420,33 @@ export type RemoveArtistFromEventResponses = {
 };
 
 export type RemoveArtistFromEventResponse = RemoveArtistFromEventResponses[keyof RemoveArtistFromEventResponses];
+
+export type SetSortOrderData = {
+    body: SetSortOrderRequestBody;
+    path: {
+        event_id: string;
+    };
+    query?: never;
+    url: '/event/{event_id}/sort';
+};
+
+export type SetSortOrderErrors = {
+    /**
+     * Error
+     */
+    default: ErrorModel;
+};
+
+export type SetSortOrderError = SetSortOrderErrors[keyof SetSortOrderErrors];
+
+export type SetSortOrderResponses = {
+    /**
+     * OK
+     */
+    200: EventDto;
+};
+
+export type SetSortOrderResponse = SetSortOrderResponses[keyof SetSortOrderResponses];
 
 export type DeleteTimeslotData = {
     body: DeleteTimeslotMarkerRequestBody;
@@ -719,5 +756,5 @@ export type UpdateUserResponses = {
 export type UpdateUserResponse = UpdateUserResponses[keyof UpdateUserResponses];
 
 export type ClientOptions = {
-    baseUrl: 'https://api-dev.openmicmpls.com' | (string & {});
+    baseUrl: 'http://localhost:3001' | (string & {});
 };

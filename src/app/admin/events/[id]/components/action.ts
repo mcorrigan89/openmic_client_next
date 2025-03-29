@@ -5,6 +5,7 @@ import {
   addArtistToEvent,
   removeArtistFromEvent,
   setTimeslot,
+  deleteTimeslot,
 } from "@/client";
 import { revalidatePath } from "next/cache";
 
@@ -34,7 +35,7 @@ export async function removeArtistFromList(artist: ArtistDto, eventId: string) {
   revalidatePath(`/admin/events/${eventId}`);
 }
 
-export async function setTimeslotAction(
+export async function setTimeslotMarkerAction(
   eventId: string,
   timeDisplay: string,
   slotIndex: number
@@ -47,6 +48,22 @@ export async function setTimeslotAction(
     body: {
       slot_index: slotIndex,
       time_display: timeDisplay,
+    },
+  });
+
+  revalidatePath(`/admin/events/${eventId}`);
+}
+
+export async function deleteTimeslotMarkerAction(
+  eventId: string,
+  timeslotMarkerId: string
+) {
+  await deleteTimeslot({
+    path: {
+      event_id: eventId,
+    },
+    body: {
+      timeslot_marker_id: timeslotMarkerId,
     },
   });
 

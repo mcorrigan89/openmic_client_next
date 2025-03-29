@@ -1,15 +1,16 @@
 import { getCurrentEvent } from "@/client";
 import { ListComponent } from "@/components/list";
+import { redirect } from "next/navigation";
 
 export default async function NowPlayingPage() {
   const { data, error } = await getCurrentEvent();
 
   if (error) {
-    return <div>Error loading events</div>;
+    return <div>Error loading event {JSON.stringify(error)}</div>;
   }
 
   if (!data) {
-    return <div>Loading...</div>;
+    return redirect("/");
   }
 
   return (

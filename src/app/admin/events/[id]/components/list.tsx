@@ -10,7 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/table";
-import { removeArtistFromList, setTimeslotAction } from "./action";
+import {
+  removeArtistFromList,
+  setTimeslotMarkerAction,
+  deleteTimeslotMarkerAction,
+} from "./action";
 import { format } from "date-fns";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import {
@@ -32,11 +36,20 @@ export function AdminListComponent({
   eventId,
 }: AdminListComponentProps) {
   const setTimeForTimeslot = async (time: string, slotIndex: number) => {
-    await setTimeslotAction(eventId, time, slotIndex);
+    await setTimeslotMarkerAction(eventId, time, slotIndex);
   };
 
+  const deleteTimeslotMarker = async (timeslotMarkerId?: string) => {
+    if (timeslotMarkerId) {
+      await deleteTimeslotMarkerAction(eventId, timeslotMarkerId);
+    }
+  };
+
+  const markerFromIndex = (index: number) =>
+    markers.find((marker) => marker.slot_index === index);
+
   const timeDisplay = (index: number) =>
-    markers.find((marker) => marker.slot_index === index)?.time_display ?? "--";
+    markerFromIndex(index)?.time_display ?? "--";
 
   return (
     <Table
@@ -88,7 +101,9 @@ export function AdminListComponent({
                     10ish
                   </DropdownItem>
                   <DropdownItem
-                    onClick={() => setTimeForTimeslot("11ish", idx)}
+                    onClick={() =>
+                      deleteTimeslotMarker(markerFromIndex(idx)?.id)
+                    }
                   >
                     Delete
                   </DropdownItem>

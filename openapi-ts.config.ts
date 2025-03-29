@@ -1,7 +1,12 @@
 import { defineConfig } from "@hey-api/openapi-ts";
 
 export default defineConfig({
-  input: "https://api-dev.openmicmpls.com/openapi.json",
+  input: "http://localhost:3001/openapi.json",
   output: "src/client",
-  plugins: ["@hey-api/client-fetch"],
+  plugins: [
+    {
+      name: "@hey-api/client-fetch",
+      runtimeConfigPath: "./src/api.ts",
+    },
+  ],
 });

@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/button";
 import { format } from "date-fns";
 import clsx from "clsx";
+import { AddEventDialog } from "./components/add-dialog";
 
 interface EventComponentProps {
   event: EventDto;
@@ -59,8 +60,11 @@ export default async function AdminEventsPage() {
   }
 
   return (
-    <div>
-      <div>Events</div>
+    <>
+      <div className="flex justify-between pb-12">
+        <div className="text-4xl font-bold">Events</div>
+        <AddEventDialog />
+      </div>
       <div>
         <Table
           striped
@@ -80,6 +84,6 @@ export default async function AdminEventsPage() {
           </TableBody>
         </Table>
       </div>
-    </div>
+    </>
   );
 }
