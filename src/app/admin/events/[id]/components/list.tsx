@@ -185,23 +185,14 @@ export function AdminListComponent({
       setItems((items) => {
         return arrayMove(items, oldIndex, newIndex);
       });
-      console.log("oldIndex ", oldIndex);
-      console.log("newIndex ", newIndex);
+
       if (oldIndex < newIndex) {
         await setSortOrderAction(eventId, {
           currentTimeSlotId: active.id as string,
           beforeTimeSlotId: over.id as string,
         });
-        console.log({
-          currentTimeSlotId: active.id as string,
-          beforeTimeSlotId: over.id as string,
-        });
       } else {
         await setSortOrderAction(eventId, {
-          currentTimeSlotId: active.id as string,
-          afterTimeSlotId: over.id as string,
-        });
-        console.log({
           currentTimeSlotId: active.id as string,
           afterTimeSlotId: over.id as string,
         });
