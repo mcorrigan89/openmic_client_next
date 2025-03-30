@@ -15,6 +15,7 @@ import {
   removeArtistFromListAction,
   setTimeslotMarkerAction,
   deleteTimeslotMarkerAction,
+  setSongCountAction,
 } from "./action";
 import { format } from "date-fns";
 import {
@@ -33,6 +34,7 @@ import {
   closestCenter,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   DragEndEvent,
@@ -47,6 +49,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useState } from "react";
 import { ArtistSearch } from "./artist-search";
+import { Input } from "@/components/input";
 
 interface AdminListItemComponentProps {
   eventId: string;
@@ -54,6 +57,11 @@ interface AdminListItemComponentProps {
   timeDisplay: string;
   timeslot: TimeslotDto;
   markerId?: string;
+  setSongCount: (
+    eventId: string,
+    timeslotId: string,
+    songCount: number
+  ) => void;
   setTimeForTimeslot: (time: string, slotIndex: number) => void;
   deleteTimeslotMarker: (timeslotMarkerId?: string) => void;
   removeArtistFromList: (artist: ArtistDto, eventId: string) => void;
@@ -65,6 +73,7 @@ function ListItem({
   timeslot,
   timeDisplay,
   markerId,
+  setSongCount,
   setTimeForTimeslot,
   deleteTimeslotMarker,
   removeArtistFromList,
@@ -82,12 +91,31 @@ function ListItem({
       <TableCell {...attributes} {...listeners}>
         <Squares2X2Icon className="h-4 cursor-grab" />
       </TableCell>
-      {/* <TableCell className="font-medium">{timeslot.artist.title}</TableCell> */}
-      <TableCell className="hidden md:table-cell">
+      <TableCell className="font-medium">{timeslot.artist.title}</TableCell>
+      {/* <TableCell className="hidden md:table-cell">
         {timeslot.artist.title}
-      </TableCell>
+      </TableCell> */}
       <TableCell className="hidden md:table-cell">
         {format(timeslot.time_display, "h:mm")}
+      </TableCell>
+      <TableCell className="w-4">
+        <Dropdown>
+          <DropdownButton outline className="z-10">
+            {timeslot.song_count}
+            <ChevronDownIcon />
+          </DropdownButton>
+          <DropdownMenu>
+            <DropdownItem onClick={() => setSongCount(eventId, timeslot.id, 1)}>
+              1
+            </DropdownItem>
+            <DropdownItem onClick={() => setSongCount(eventId, timeslot.id, 2)}>
+              2
+            </DropdownItem>
+            <DropdownItem onClick={() => setSongCount(eventId, timeslot.id, 3)}>
+              3
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </TableCell>
       <TableCell>
         <Dropdown>
@@ -171,14 +199,37 @@ export function AdminListComponent({
     }
   };
 
+  const setSongCount = async (
+    eventId: string,
+    timeslotId: string,
+    songCount: number
+  ) => {
+    const eventDto = await setSongCountAction(eventId, timeslotId, songCount);
+    if (eventDto?.time_slots) {
+      setItems(eventDto.time_slots);
+    }
+  };
+
   const markerFromIndex = (index: number) =>
     markers.find((marker) => marker.slot_index === index);
 
-  const timeDisplay = (index: number) =>
-    markerFromIndex(index)?.time_display ?? "--";
+  const timeDisplay = (index: number) => {
+    const marker = markerFromIndex(index);
+    if (marker && marker.type === "TIME") {
+      return marker.display;
+    } else {
+      return "--";
+    }
+  };
+
+  const playingDisplay = (index: number) => {
+    const marker = markerFromIndex(index);
+    return !!(marker && marker.type === "TIME");
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor),
+    useSensor(TouchSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -241,6 +292,7 @@ export function AdminListComponent({
               <TableHeader className="hidden md:table-cell">
                 Est. Time
               </TableHeader>
+              <TableHeader>Songs</TableHeader>
               <TableHeader>Time</TableHeader>
               <TableHeader>Remove</TableHeader>
             </TableRow>
@@ -256,6 +308,7 @@ export function AdminListComponent({
                   timeslot={timeslot}
                   timeDisplay={timeDisplay(idx)}
                   markerId={markerFromIndex(idx)?.id}
+                  setSongCount={setSongCount}
                   setTimeForTimeslot={setTimeForTimeslot}
                   deleteTimeslotMarker={deleteTimeslotMarker}
                   removeArtistFromList={removeArtistFromList}

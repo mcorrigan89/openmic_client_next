@@ -162,9 +162,10 @@ export type SetTimeslotMarkerRequestBody = {
 };
 
 export type TimesMarkerDto = {
+    display: string;
     id: string;
     slot_index: number;
-    time_display: string;
+    type: string;
 };
 
 export type TimeslotDto = {
@@ -192,6 +193,14 @@ export type UpdateEventRequestBody = {
     end_time: string;
     event_type: string;
     start_time: string;
+};
+
+export type UpdateTimeSlotRequestBody = {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    readonly $schema?: string;
+    song_count: number;
 };
 
 export type UpdateUserRequestBody = {
@@ -519,7 +528,7 @@ export type DeleteTimeslotData = {
         event_id: string;
     };
     query?: never;
-    url: '/event/{event_id}/timeslot';
+    url: '/event/{event_id}/timeslot/marker';
 };
 
 export type DeleteTimeslotErrors = {
@@ -546,7 +555,7 @@ export type SetTimeslotData = {
         event_id: string;
     };
     query?: never;
-    url: '/event/{event_id}/timeslot';
+    url: '/event/{event_id}/timeslot/marker';
 };
 
 export type SetTimeslotErrors = {
@@ -566,6 +575,34 @@ export type SetTimeslotResponses = {
 };
 
 export type SetTimeslotResponse = SetTimeslotResponses[keyof SetTimeslotResponses];
+
+export type UpdateTimeslotData = {
+    body: UpdateTimeSlotRequestBody;
+    path: {
+        event_id: string;
+        timeslot_id: string;
+    };
+    query?: never;
+    url: '/event/{event_id}/timeslot/{timeslot_id}';
+};
+
+export type UpdateTimeslotErrors = {
+    /**
+     * Error
+     */
+    default: ErrorModel;
+};
+
+export type UpdateTimeslotError = UpdateTimeslotErrors[keyof UpdateTimeslotErrors];
+
+export type UpdateTimeslotResponses = {
+    /**
+     * OK
+     */
+    200: EventDto;
+};
+
+export type UpdateTimeslotResponse = UpdateTimeslotResponses[keyof UpdateTimeslotResponses];
 
 export type DeleteEventData = {
     body?: never;

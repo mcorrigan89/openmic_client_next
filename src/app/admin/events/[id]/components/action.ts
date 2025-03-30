@@ -7,6 +7,7 @@ import {
   setTimeslot,
   deleteTimeslot,
   setSortOrder,
+  updateTimeslot,
 } from "@/client";
 import { revalidatePath } from "next/cache";
 
@@ -39,6 +40,29 @@ export async function removeArtistFromListAction(
       artist_id: artist.id,
     },
   });
+
+  revalidatePath(`/admin/events/${eventId}`);
+  return data;
+}
+export async function setSongCountAction(
+  eventId: string,
+  timeslotId: string,
+  songCount: number
+) {
+  const { data, error } = await updateTimeslot({
+    path: {
+      event_id: eventId,
+      timeslot_id: timeslotId,
+    },
+    body: {
+      song_count: songCount,
+    },
+  });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
 
   revalidatePath(`/admin/events/${eventId}`);
   return data;
