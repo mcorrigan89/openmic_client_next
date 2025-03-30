@@ -53,7 +53,7 @@ interface AdminListItemComponentProps {
   idx: number;
   timeDisplay: string;
   timeslot: TimeslotDto;
-  markerId?: string;
+  timeMarkerId?: string;
   setSongCount: (
     eventId: string,
     timeslotId: string,
@@ -69,7 +69,7 @@ function ListItem({
   idx,
   timeslot,
   timeDisplay,
-  markerId,
+  timeMarkerId,
   setSongCount,
   setTimeForTimeslot,
   deleteTimeslotMarker,
@@ -136,7 +136,7 @@ function ListItem({
             <DropdownItem onClick={() => setTimeForTimeslot("10ish", idx)}>
               10ish
             </DropdownItem>
-            <DropdownItem onClick={() => deleteTimeslotMarker(markerId)}>
+            <DropdownItem onClick={() => deleteTimeslotMarker(timeMarkerId)}>
               Delete
             </DropdownItem>
           </DropdownMenu>
@@ -207,21 +207,24 @@ export function AdminListComponent({
     }
   };
 
-  const markerFromIndex = (index: number) =>
-    markers.find((marker) => marker.slot_index === index);
+  const timeMarkerFromIndex = (index: number) =>
+    markers.find(
+      (marker) => marker.slot_index === index && marker.type === "TIME"
+    );
+
+  const playingMarkerFromIndex = (index: number) =>
+    markers.find(
+      (marker) => marker.slot_index === index && marker.type === "PLAYING"
+    );
 
   const timeDisplay = (index: number) => {
-    const marker = markerFromIndex(index);
-    if (marker && marker.type === "TIME") {
-      return marker.display;
-    } else {
-      return "--";
-    }
+    const marker = timeMarkerFromIndex(index);
+    return marker?.display ?? "--";
   };
 
   const playingDisplay = (index: number) => {
-    const marker = markerFromIndex(index);
-    return !!(marker && marker.type === "TIME");
+    const marker = playingMarkerFromIndex(index);
+    return !!marker;
   };
 
   const sensors = useSensors(
@@ -304,7 +307,7 @@ export function AdminListComponent({
                   idx={idx}
                   timeslot={timeslot}
                   timeDisplay={timeDisplay(idx)}
-                  markerId={markerFromIndex(idx)?.id}
+                  timeMarkerId={timeMarkerFromIndex(idx)?.id}
                   setSongCount={setSongCount}
                   setTimeForTimeslot={setTimeForTimeslot}
                   deleteTimeslotMarker={deleteTimeslotMarker}
