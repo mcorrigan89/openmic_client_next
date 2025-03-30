@@ -1,6 +1,6 @@
 "use client";
 
-import { TimeslotDto, TimesMarkerDto } from "@/client";
+import { ArtistDto, TimeslotDto, TimesMarkerDto } from "@/client";
 import { Button } from "@/components/button";
 import {
   Table,
@@ -12,7 +12,7 @@ import {
 } from "@/components/table";
 import {
   setSortOrderAction,
-  removeArtistFromList,
+  removeArtistFromListAction,
   setTimeslotMarkerAction,
   deleteTimeslotMarkerAction,
 } from "./action";
@@ -51,6 +51,7 @@ interface AdminListItemComponentProps {
   markerId?: string;
   setTimeForTimeslot: (time: string, slotIndex: number) => void;
   deleteTimeslotMarker: (timeslotMarkerId?: string) => void;
+  removeArtistFromList: (artist: ArtistDto, eventId: string) => void;
 }
 
 function ListItem({
@@ -61,6 +62,7 @@ function ListItem({
   markerId,
   setTimeForTimeslot,
   deleteTimeslotMarker,
+  removeArtistFromList,
 }: AdminListItemComponentProps) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: timeslot.id });
@@ -71,13 +73,10 @@ function ListItem({
   };
 
   return (
-    <TableRow
-      key={timeslot.id}
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-    >
+    <TableRow key={timeslot.id} ref={setNodeRef} style={style}>
+      <TableCell {...attributes} {...listeners}>
+        GRAB
+      </TableCell>
       <TableCell className="font-medium">{timeslot.artist.title}</TableCell>
       <TableCell className="hidden md:table-cell">
         {timeslot.artist.title}
@@ -87,7 +86,7 @@ function ListItem({
       </TableCell>
       <TableCell>
         <Dropdown>
-          <DropdownButton outline>
+          <DropdownButton outline className="z-10">
             {timeDisplay}
             <ChevronDownIcon />
           </DropdownButton>
@@ -137,12 +136,28 @@ export function AdminListComponent({
   const [items, setItems] = useState(timeslots);
 
   const setTimeForTimeslot = async (time: string, slotIndex: number) => {
-    await setTimeslotMarkerAction(eventId, time, slotIndex);
+    const eventDto = await setTimeslotMarkerAction(eventId, time, slotIndex);
+    if (eventDto?.time_slots) {
+      setItems(eventDto.time_slots);
+    }
   };
 
   const deleteTimeslotMarker = async (timeslotMarkerId?: string) => {
     if (timeslotMarkerId) {
-      await deleteTimeslotMarkerAction(eventId, timeslotMarkerId);
+      const eventDto = await deleteTimeslotMarkerAction(
+        eventId,
+        timeslotMarkerId
+      );
+      if (eventDto?.time_slots) {
+        setItems(eventDto.time_slots);
+      }
+    }
+  };
+
+  const removeArtistFromList = async (artist: ArtistDto, eventId: string) => {
+    const eventDto = await removeArtistFromListAction(artist, eventId);
+    if (eventDto?.time_slots) {
+      setItems(eventDto.time_slots);
     }
   };
 
@@ -163,12 +178,12 @@ export function AdminListComponent({
     const { active, over } = event;
 
     if (active?.id && over?.id && active.id !== over.id) {
-      await setSortOrderAction(eventId, active.id as string, over.id as string);
       setItems((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
         return arrayMove(items, oldIndex, newIndex);
       });
+      await setSortOrderAction(eventId, active.id as string, over.id as string);
     }
   }
 
@@ -185,6 +200,7 @@ export function AdminListComponent({
       >
         <TableHead>
           <TableRow>
+            <TableHeader>Grab</TableHeader>
             <TableHeader>Title</TableHeader>
             <TableHeader className="hidden md:table-cell">
               Title Override
@@ -209,6 +225,7 @@ export function AdminListComponent({
                 markerId={markerFromIndex(idx)?.id}
                 setTimeForTimeslot={setTimeForTimeslot}
                 deleteTimeslotMarker={deleteTimeslotMarker}
+                removeArtistFromList={removeArtistFromList}
               />
             ))}
           </TableBody>

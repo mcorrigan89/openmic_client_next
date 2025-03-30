@@ -13,7 +13,7 @@ import {
 } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
-import { addArtistToList } from "./action";
+import { addArtistToListAction } from "./action";
 
 interface ArtistSearchProps {
   eventId: string;
@@ -56,8 +56,8 @@ export default function Example({ artists, eventId }: ArtistSearchProps) {
               onChange={async (artist: ArtistDto) => {
                 if (artist) {
                   // window.location = person.url;
-                  console.log(artist);
-                  await addArtistToList(artist, eventId);
+
+                  await addArtistToListAction(artist, eventId);
                   setQuery("");
                 }
               }}

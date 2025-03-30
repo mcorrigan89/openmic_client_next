@@ -10,8 +10,11 @@ import {
 } from "@/client";
 import { revalidatePath } from "next/cache";
 
-export async function addArtistToList(artist: ArtistDto, eventId: string) {
-  await addArtistToEvent({
+export async function addArtistToListAction(
+  artist: ArtistDto,
+  eventId: string
+) {
+  const { data } = await addArtistToEvent({
     path: {
       event_id: eventId,
     },
@@ -21,10 +24,14 @@ export async function addArtistToList(artist: ArtistDto, eventId: string) {
   });
 
   revalidatePath(`/admin/events/${eventId}`);
+  return data;
 }
 
-export async function removeArtistFromList(artist: ArtistDto, eventId: string) {
-  await removeArtistFromEvent({
+export async function removeArtistFromListAction(
+  artist: ArtistDto,
+  eventId: string
+) {
+  const { data } = await removeArtistFromEvent({
     path: {
       event_id: eventId,
     },
@@ -34,6 +41,7 @@ export async function removeArtistFromList(artist: ArtistDto, eventId: string) {
   });
 
   revalidatePath(`/admin/events/${eventId}`);
+  return data;
 }
 
 export async function setTimeslotMarkerAction(
@@ -41,8 +49,7 @@ export async function setTimeslotMarkerAction(
   timeDisplay: string,
   slotIndex: number
 ) {
-  console.log(timeDisplay);
-  await setTimeslot({
+  const { data } = await setTimeslot({
     path: {
       event_id: eventId,
     },
@@ -53,13 +60,14 @@ export async function setTimeslotMarkerAction(
   });
 
   revalidatePath(`/admin/events/${eventId}`);
+  return data;
 }
 
 export async function deleteTimeslotMarkerAction(
   eventId: string,
   timeslotMarkerId: string
 ) {
-  await deleteTimeslot({
+  const { data } = await deleteTimeslot({
     path: {
       event_id: eventId,
     },
@@ -69,6 +77,7 @@ export async function deleteTimeslotMarkerAction(
   });
 
   revalidatePath(`/admin/events/${eventId}`);
+  return data;
 }
 
 export async function setSortOrderAction(
