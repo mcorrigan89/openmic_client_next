@@ -18,11 +18,8 @@ import {
   setSongCountAction,
 } from "./action";
 import { format } from "date-fns";
-import {
-  ChevronDownIcon,
-  XMarkIcon,
-  Squares2X2Icon,
-} from "@heroicons/react/20/solid";
+import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { Squares2X2Icon } from "@heroicons/react/24/outline";
 import {
   Dropdown,
   DropdownButton,
@@ -89,7 +86,7 @@ function ListItem({
   return (
     <TableRow key={timeslot.id} ref={setNodeRef} style={style}>
       <TableCell {...attributes} {...listeners}>
-        <Squares2X2Icon className="h-4 cursor-grab" />
+        <Squares2X2Icon className="h-10 lg:h-6 cursor-grab" />
       </TableCell>
       <TableCell className="font-medium">{timeslot.artist.title}</TableCell>
       {/* <TableCell className="hidden md:table-cell">
