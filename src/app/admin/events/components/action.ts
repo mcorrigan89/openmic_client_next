@@ -7,6 +7,8 @@ import {
 import { formOpts } from "./shared";
 import { revalidatePath } from "next/cache";
 import { createEvent, deleteEvent } from "@/client";
+import { addHours, setHours } from "date-fns";
+import { tz } from "@date-fns/tz";
 
 const serverValidate = createServerValidate({
   ...formOpts,
@@ -14,11 +16,13 @@ const serverValidate = createServerValidate({
     if (!value.type) {
       return "Type cannot be blank";
     }
+    if (!value.date) {
+      return "Date cannot be blank";
+    }
   },
 });
 
 export async function addEventAction(prev: unknown, formData: FormData) {
-  console.log("WAT");
   try {
     await serverValidate(formData);
   } catch (e) {
@@ -30,17 +34,21 @@ export async function addEventAction(prev: unknown, formData: FormData) {
     throw e;
   }
 
+  const startDateString = formData.get("date") as string;
+  const startDate = new Date(startDateString);
+  const tzStartDate = tz("America/Chicago")(startDate);
+  const tzDateTime = setHours(tzStartDate, 12);
+  const tzEndDateTime = addHours(tzDateTime, 5);
+
   await createEvent({
     body: {
       event_type: formData.get("type") as string,
-      start_time: "2025-03-24T17:00:00Z",
-      end_time: "2025-03-24T23:00:00Z",
+      start_time: tzDateTime.toISOString(),
+      end_time: tzEndDateTime.toISOString(),
     },
   });
 
   revalidatePath("/admin/artists");
-
-  // Your form has successfully validated!
 }
 
 export async function deleteEventAction(eventId: string) {

@@ -28,6 +28,7 @@ export function AddEventDialog() {
       [state]
     ),
     onSubmit: (props) => {
+      console.log(props);
       props.formApi.reset();
     },
   });
@@ -40,7 +41,13 @@ export function AddEventDialog() {
         Add New Event
       </Button>
       <Dialog open={isOpen} onClose={setIsOpen}>
-        <form action={action as never} onSubmit={() => form.handleSubmit()}>
+        <form
+          action={(f) => {
+            console.log("FORM ", f);
+            return action(f);
+          }}
+          onSubmit={() => form.handleSubmit()}
+        >
           <DialogTitle>Create a new event</DialogTitle>
           {/* <DialogDescription>
             The refund will be reflected in the customer’s bank account 2 to 3
@@ -54,7 +61,7 @@ export function AddEventDialog() {
             <form.Field name="type">
               {(field) => {
                 return (
-                  <Field className="flex">
+                  <Field className="">
                     <Label>Event</Label>
                     <Select
                       name="type"
@@ -69,7 +76,23 @@ export function AddEventDialog() {
               }}
             </form.Field>
 
-            <DatePicker />
+            <form.Field
+              name="date"
+              children={({ state, setValue }) => (
+                <>
+                  <input
+                    defaultValue={state.value}
+                    className="hidden"
+                    type="text"
+                    name="date"
+                  />
+                  <DatePicker
+                    selectedDate={state.value}
+                    onSelectDate={(date) => setValue(date)}
+                  />
+                </>
+              )}
+            />
 
             <form.Subscribe
               selector={(formState) => [

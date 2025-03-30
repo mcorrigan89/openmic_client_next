@@ -9,6 +9,7 @@ import {
   endOfWeek,
   add,
   format,
+  isSameDay,
 } from "date-fns";
 import { useState } from "react";
 
@@ -21,13 +22,14 @@ function getDaysInMonth(date: Date) {
 
   while (start <= end) {
     days.push({
-      date: `${start.getFullYear()}-${start.getMonth() + 1}-${start
-        .getDate()
-        .toString()
-        .padStart(2, "0")}`,
+      date: new Date(
+        `${start.getFullYear()}-${start.getMonth() + 1}-${start
+          .getDate()
+          .toString()
+          .padStart(2, "0")}`
+      ),
       isCurrentMonth: true,
-      isToday: false,
-      isSelected: false,
+      isToday: isSameDay(start, new Date()),
     });
     start = add(start, { days: 1 });
   }
@@ -35,11 +37,11 @@ function getDaysInMonth(date: Date) {
 }
 
 interface DatePickerProps {
-  selectedDate?: Date;
-  onSelectDate?: (date: Date) => void;
+  selectedDate: Date;
+  onSelectDate: (date: Date) => void;
 }
 
-export function DatePicker({}: DatePickerProps) {
+export function DatePicker({ selectedDate, onSelectDate }: DatePickerProps) {
   const [viewDay, setViewDay] = useState(new Date());
   const days = getDaysInMonth(viewDay);
   function goForwardMonth() {
@@ -50,13 +52,12 @@ export function DatePicker({}: DatePickerProps) {
     setViewDay(add(viewDay, { months: -1 }));
   }
 
-  console.log(days);
   return (
     <div className="mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
       <div className="flex items-center text-gray-900">
         <button
           type="button"
-          className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+          className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500 cursor-pointer"
           onClick={goBackwardMonth}
         >
           <span className="sr-only">Previous month</span>
@@ -67,7 +68,7 @@ export function DatePicker({}: DatePickerProps) {
         </div>
         <button
           type="button"
-          className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+          className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500 cursor-pointer"
           onClick={goForwardMonth}
         >
           <span className="sr-only">Next month</span>
@@ -84,42 +85,48 @@ export function DatePicker({}: DatePickerProps) {
         <div>S</div>
       </div>
       <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm ring-1 shadow-sm ring-gray-200">
-        {days.map((day, dayIdx) => (
-          <button
-            key={day.date}
-            type="button"
-            className={clsx(
-              "py-1.5 hover:bg-gray-100 focus:z-10",
-              day.isCurrentMonth ? "bg-white" : "bg-gray-50",
-              (day.isSelected || day.isToday) && "font-semibold",
-              day.isSelected && "text-white",
-              !day.isSelected &&
-                day.isCurrentMonth &&
-                !day.isToday &&
-                "text-gray-900",
-              !day.isSelected &&
-                !day.isCurrentMonth &&
-                !day.isToday &&
-                "text-gray-400",
-              day.isToday && !day.isSelected && "text-indigo-600",
-              dayIdx === 0 && "rounded-tl-lg",
-              dayIdx === 6 && "rounded-tr-lg",
-              dayIdx === days.length - 7 && "rounded-bl-lg",
-              dayIdx === days.length - 1 && "rounded-br-lg"
-            )}
-          >
-            <time
-              dateTime={day.date}
+        {days.map((day, dayIdx) => {
+          const isSelected = new Date(selectedDate)
+            ? isSameDay(selectedDate, day.date)
+            : false;
+          return (
+            <button
+              key={day.date.toISOString()}
+              type="button"
+              onClick={() => onSelectDate(day.date)}
               className={clsx(
-                "mx-auto flex size-7 items-center justify-center rounded-full",
-                day.isSelected && day.isToday && "bg-indigo-600",
-                day.isSelected && !day.isToday && "bg-gray-900"
+                "py-1.5 hover:bg-gray-100 focus:z-10",
+                day.isCurrentMonth ? "bg-white" : "bg-gray-50",
+                (isSelected || day.isToday) && "font-semibold",
+                isSelected && "text-white",
+                !isSelected &&
+                  day.isCurrentMonth &&
+                  !day.isToday &&
+                  "text-gray-900",
+                !isSelected &&
+                  !day.isCurrentMonth &&
+                  !day.isToday &&
+                  "text-gray-400",
+                day.isToday && !isSelected && "text-indigo-600",
+                dayIdx === 0 && "rounded-tl-lg",
+                dayIdx === 6 && "rounded-tr-lg",
+                dayIdx === days.length - 7 && "rounded-bl-lg",
+                dayIdx === days.length - 1 && "rounded-br-lg"
               )}
             >
-              {format(day.date, "d")}
-            </time>
-          </button>
-        ))}
+              <time
+                dateTime={day.date.toISOString()}
+                className={clsx(
+                  "mx-auto flex size-7 items-center justify-center rounded-full",
+                  isSelected && day.isToday && "bg-indigo-600",
+                  isSelected && !day.isToday && "bg-gray-900"
+                )}
+              >
+                {format(day.date, "d")}
+              </time>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
