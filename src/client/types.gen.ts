@@ -174,6 +174,16 @@ export type TimeslotDto = {
     time_display: string;
 };
 
+export type UpdateArtistRequestBody = {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    readonly $schema?: string;
+    bio: string | null;
+    sub_title: string | null;
+    title: string;
+};
+
 export type UpdateEventRequestBody = {
     /**
      * A URL to the JSON Schema for this object.
@@ -239,6 +249,33 @@ export type CreateArtistResponses = {
 
 export type CreateArtistResponse = CreateArtistResponses[keyof CreateArtistResponses];
 
+export type DeleteArtistData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/artist/{id}';
+};
+
+export type DeleteArtistErrors = {
+    /**
+     * Error
+     */
+    default: ErrorModel;
+};
+
+export type DeleteArtistError = DeleteArtistErrors[keyof DeleteArtistErrors];
+
+export type DeleteArtistResponses = {
+    /**
+     * OK
+     */
+    200: ArtistDto;
+};
+
+export type DeleteArtistResponse = DeleteArtistResponses[keyof DeleteArtistResponses];
+
 export type GetArtistData = {
     body?: never;
     path: {
@@ -265,6 +302,33 @@ export type GetArtistResponses = {
 };
 
 export type GetArtistResponse = GetArtistResponses[keyof GetArtistResponses];
+
+export type UpdateArtistData = {
+    body: UpdateArtistRequestBody;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/artist/{id}';
+};
+
+export type UpdateArtistErrors = {
+    /**
+     * Error
+     */
+    default: ErrorModel;
+};
+
+export type UpdateArtistError = UpdateArtistErrors[keyof UpdateArtistErrors];
+
+export type UpdateArtistResponses = {
+    /**
+     * OK
+     */
+    200: ArtistDto;
+};
+
+export type UpdateArtistResponse = UpdateArtistResponses[keyof UpdateArtistResponses];
 
 export type GetAllArtistsData = {
     body?: never;

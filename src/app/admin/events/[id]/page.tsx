@@ -2,7 +2,7 @@ import { getAllArtists, getEvent } from "@/client";
 import { Divider } from "@/components/divider";
 import { differenceInSeconds, format, secondsToMinutes } from "date-fns";
 import { AdminListComponent } from "./components/list";
-import ExampleCommand from "./components/artist-search";
+import { ArtistSearch } from "./components/artist-search";
 
 interface EventPageProps {
   params: Promise<{
@@ -62,15 +62,11 @@ export default async function AdminEventPage({ params }: EventPageProps) {
         </div>
         <Divider />
       </div>
-      <div className="flex flex-col gap-4 pb-8">
-        <div className="flex gap-4 justify-center">
-          <ExampleCommand artists={artistData} eventId={eventData.id} />
-        </div>
-        <Divider />
-      </div>
+
       <div>
         {eventData.time_slots ? (
           <AdminListComponent
+            artists={artistData}
             markers={eventData.time_markers ?? []}
             timeslots={eventData.time_slots}
             eventId={eventData.id}

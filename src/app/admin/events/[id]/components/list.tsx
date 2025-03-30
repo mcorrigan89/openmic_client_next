@@ -46,6 +46,7 @@ import {
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useState } from "react";
+import { ArtistSearch } from "./artist-search";
 
 interface AdminListItemComponentProps {
   eventId: string;
@@ -81,8 +82,10 @@ function ListItem({
       <TableCell {...attributes} {...listeners}>
         <Squares2X2Icon className="h-4 cursor-grab" />
       </TableCell>
-      <TableCell className="font-medium">{timeslot.artist.title}</TableCell>
-      <TableCell className="hidden md:table-cell">{timeslot.id}</TableCell>
+      {/* <TableCell className="font-medium">{timeslot.artist.title}</TableCell> */}
+      <TableCell className="hidden md:table-cell">
+        {timeslot.artist.title}
+      </TableCell>
       <TableCell className="hidden md:table-cell">
         {format(timeslot.time_display, "h:mm")}
       </TableCell>
@@ -93,6 +96,9 @@ function ListItem({
             <ChevronDownIcon />
           </DropdownButton>
           <DropdownMenu>
+            <DropdownItem onClick={() => setTimeForTimeslot("6pm", idx)}>
+              6pm
+            </DropdownItem>
             <DropdownItem onClick={() => setTimeForTimeslot("7ish", idx)}>
               7ish
             </DropdownItem>
@@ -128,12 +134,14 @@ interface AdminListComponentProps {
   eventId: string;
   markers: TimesMarkerDto[];
   timeslots: TimeslotDto[];
+  artists: ArtistDto[];
 }
 
 export function AdminListComponent({
   timeslots,
   markers,
   eventId,
+  artists,
 }: AdminListComponentProps) {
   const [items, setItems] = useState(timeslots);
 
@@ -201,49 +209,62 @@ export function AdminListComponent({
   }
 
   return (
-    <DndContext
-      id="timeslot-list"
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <Table
-        striped
-        className="[--gutter:--spacing(6)] sm:[--gutter:--spacing(8)]"
+    <div className="flex flex-col gap-4 pb-8">
+      <div className="flex gap-4 justify-center">
+        <ArtistSearch
+          artists={artists}
+          eventId={eventId}
+          updateTimeSlots={(eventDto) => {
+            if (eventDto?.time_slots) {
+              setItems(eventDto.time_slots);
+            }
+          }}
+        />
+      </div>
+      <DndContext
+        id="timeslot-list"
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
       >
-        <TableHead>
-          <TableRow>
-            <TableHeader>Grab</TableHeader>
-            <TableHeader>Title</TableHeader>
-            <TableHeader className="hidden md:table-cell">
+        <Table
+          striped
+          className="[--gutter:--spacing(6)] sm:[--gutter:--spacing(8)]"
+        >
+          <TableHead>
+            <TableRow>
+              <TableHeader>Grab</TableHeader>
+              <TableHeader>Title</TableHeader>
+              {/* <TableHeader className="hidden md:table-cell">
               Title Override
-            </TableHeader>
-            <TableHeader className="hidden md:table-cell">
-              Est. Time
-            </TableHeader>
-            <TableHeader>Time</TableHeader>
-            <TableHeader>Remove</TableHeader>
-          </TableRow>
-        </TableHead>
+            </TableHeader> */}
+              <TableHeader className="hidden md:table-cell">
+                Est. Time
+              </TableHeader>
+              <TableHeader>Time</TableHeader>
+              <TableHeader>Remove</TableHeader>
+            </TableRow>
+          </TableHead>
 
-        <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          <TableBody>
-            {items.map((timeslot, idx) => (
-              <ListItem
-                key={timeslot.id}
-                eventId={eventId}
-                idx={idx}
-                timeslot={timeslot}
-                timeDisplay={timeDisplay(idx)}
-                markerId={markerFromIndex(idx)?.id}
-                setTimeForTimeslot={setTimeForTimeslot}
-                deleteTimeslotMarker={deleteTimeslotMarker}
-                removeArtistFromList={removeArtistFromList}
-              />
-            ))}
-          </TableBody>
-        </SortableContext>
-      </Table>
-    </DndContext>
+          <SortableContext items={items} strategy={verticalListSortingStrategy}>
+            <TableBody>
+              {items.map((timeslot, idx) => (
+                <ListItem
+                  key={timeslot.id}
+                  eventId={eventId}
+                  idx={idx}
+                  timeslot={timeslot}
+                  timeDisplay={timeDisplay(idx)}
+                  markerId={markerFromIndex(idx)?.id}
+                  setTimeForTimeslot={setTimeForTimeslot}
+                  deleteTimeslotMarker={deleteTimeslotMarker}
+                  removeArtistFromList={removeArtistFromList}
+                />
+              ))}
+            </TableBody>
+          </SortableContext>
+        </Table>
+      </DndContext>
+    </div>
   );
 }

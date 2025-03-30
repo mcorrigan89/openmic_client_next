@@ -1,6 +1,6 @@
 "use client";
 
-import { ArtistDto } from "@/client";
+import { ArtistDto, EventDto } from "@/client";
 import { Button } from "@/components/button";
 import {
   Combobox,
@@ -18,9 +18,14 @@ import { addArtistToListAction } from "./action";
 interface ArtistSearchProps {
   eventId: string;
   artists: ArtistDto[];
+  updateTimeSlots: (event: EventDto) => void;
 }
 
-export default function Example({ artists, eventId }: ArtistSearchProps) {
+export function ArtistSearch({
+  artists,
+  eventId,
+  updateTimeSlots,
+}: ArtistSearchProps) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
 
@@ -57,8 +62,14 @@ export default function Example({ artists, eventId }: ArtistSearchProps) {
                 if (artist) {
                   // window.location = person.url;
 
-                  await addArtistToListAction(artist, eventId);
+                  const eventData = await addArtistToListAction(
+                    artist,
+                    eventId
+                  );
                   setQuery("");
+                  if (eventData) {
+                    updateTimeSlots(eventData);
+                  }
                 }
               }}
             >
