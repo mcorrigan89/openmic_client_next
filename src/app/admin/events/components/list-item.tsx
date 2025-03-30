@@ -6,13 +6,17 @@ import { Button } from "@/components/button";
 import { format } from "date-fns";
 import clsx from "clsx";
 import { deleteEventAction } from "./action";
+import { TZDate } from "@date-fns/tz";
 
 interface EventComponentProps {
   event: EventDto;
 }
 
 export function EventListComponent({ event }: EventComponentProps) {
-  const startDate = format(event.start_time, "EEE MMMM do");
+  const startDate = format(
+    new TZDate(event.start_time, "America/Chicago"),
+    "EEE MMMM do"
+  );
 
   let eventType = "";
   let eventTypeColor = "";

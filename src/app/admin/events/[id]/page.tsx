@@ -3,6 +3,7 @@ import { Divider } from "@/components/divider";
 import { differenceInSeconds, format, secondsToMinutes } from "date-fns";
 import { AdminListComponent } from "./components/list";
 import { ArtistSearch } from "./components/artist-search";
+import { TZDate } from "@date-fns/tz";
 
 interface EventPageProps {
   params: Promise<{
@@ -34,9 +35,19 @@ export default async function AdminEventPage({ params }: EventPageProps) {
       break;
   }
 
-  const startDate = format(eventData.start_time, "EEEE, MMMM do yyy");
-  const startTime = format(eventData.start_time, "h:mma");
-  const endTime = format(eventData.end_time, "h:mma");
+  const startDate = format(
+    new TZDate(eventData.start_time, "America/Chicago"),
+    "EEEE, MMMM do yyy"
+  );
+
+  const startTime = format(
+    new TZDate(eventData.start_time, "America/Chicago"),
+    "h:mma"
+  );
+  const endTime = format(
+    new TZDate(eventData.end_time, "America/Chicago"),
+    "h:mma"
+  );
   const listCount = eventData.time_slots ? eventData.time_slots.length : 0;
   const estimatedSecondsPerArtist =
     differenceInSeconds(eventData.end_time, eventData.start_time) / listCount;

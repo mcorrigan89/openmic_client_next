@@ -37,8 +37,8 @@ export async function addEventAction(prev: unknown, formData: FormData) {
   const startDateString = formData.get("date") as string;
   const startDate = new Date(startDateString);
   const tzStartDate = tz("America/Chicago")(startDate);
-  console.log("TZ START DATE", tzStartDate);
-  const tzDateTime = setHours(tzStartDate, 12);
+
+  const tzDateTime = setHours(tzStartDate, 18);
   const tzEndDateTime = addHours(tzDateTime, 5);
 
   await createEvent({

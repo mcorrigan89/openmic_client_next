@@ -49,6 +49,7 @@ import { useState } from "react";
 import { ArtistSearch } from "./artist-search";
 import { Input } from "@/components/input";
 import clsx from "clsx";
+import { TZDate } from "@date-fns/tz";
 
 interface AdminListItemComponentProps {
   eventId: string;
@@ -89,6 +90,8 @@ function ListItem({
     transition,
   };
 
+  console.log(timeslot.time_display);
+
   return (
     <TableRow key={timeslot.id} ref={setNodeRef} style={style}>
       <TableCell {...attributes} {...listeners}>
@@ -99,7 +102,7 @@ function ListItem({
         {timeslot.artist.title}
       </TableCell> */}
       <TableCell className="hidden md:table-cell">
-        {format(timeslot.time_display, "h:mm")}
+        {format(new TZDate(timeslot.time_display, "America/Chicago"), "h:mm")}
       </TableCell>
       <TableCell className="w-4">
         <Dropdown>
