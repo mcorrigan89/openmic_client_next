@@ -147,7 +147,8 @@ export type SetSortOrderRequestBody = {
      * A URL to the JSON Schema for this object.
      */
     readonly $schema?: string;
-    before_slot_id: string;
+    after_slot_id?: string;
+    before_slot_id?: string;
     current_slot_id: string;
 };
 

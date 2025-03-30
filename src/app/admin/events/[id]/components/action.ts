@@ -82,16 +82,20 @@ export async function deleteTimeslotMarkerAction(
 
 export async function setSortOrderAction(
   eventId: string,
-  currentTimeSlotId: string,
-  beforeTimeSlotId: string
+  args: {
+    currentTimeSlotId: string;
+    beforeTimeSlotId?: string;
+    afterTimeSlotId?: string;
+  }
 ) {
   await setSortOrder({
     path: {
       event_id: eventId,
     },
     body: {
-      before_slot_id: beforeTimeSlotId,
-      current_slot_id: currentTimeSlotId,
+      before_slot_id: args.beforeTimeSlotId,
+      current_slot_id: args.currentTimeSlotId,
+      after_slot_id: args.afterTimeSlotId,
     },
   });
 

@@ -17,7 +17,11 @@ import {
   deleteTimeslotMarkerAction,
 } from "./action";
 import { format } from "date-fns";
-import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import {
+  ChevronDownIcon,
+  XMarkIcon,
+  Squares2X2Icon,
+} from "@heroicons/react/20/solid";
 import {
   Dropdown,
   DropdownButton,
@@ -75,12 +79,10 @@ function ListItem({
   return (
     <TableRow key={timeslot.id} ref={setNodeRef} style={style}>
       <TableCell {...attributes} {...listeners}>
-        GRAB
+        <Squares2X2Icon className="h-4 cursor-grab" />
       </TableCell>
       <TableCell className="font-medium">{timeslot.artist.title}</TableCell>
-      <TableCell className="hidden md:table-cell">
-        {timeslot.artist.title}
-      </TableCell>
+      <TableCell className="hidden md:table-cell">{timeslot.id}</TableCell>
       <TableCell className="hidden md:table-cell">
         {format(timeslot.time_display, "h:mm")}
       </TableCell>
@@ -178,12 +180,32 @@ export function AdminListComponent({
     const { active, over } = event;
 
     if (active?.id && over?.id && active.id !== over.id) {
+      const oldIndex = items.findIndex((item) => item.id === active.id);
+      const newIndex = items.findIndex((item) => item.id === over.id);
       setItems((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
         return arrayMove(items, oldIndex, newIndex);
       });
-      await setSortOrderAction(eventId, active.id as string, over.id as string);
+      console.log("oldIndex ", oldIndex);
+      console.log("newIndex ", newIndex);
+      if (oldIndex < newIndex) {
+        await setSortOrderAction(eventId, {
+          currentTimeSlotId: active.id as string,
+          beforeTimeSlotId: over.id as string,
+        });
+        console.log({
+          currentTimeSlotId: active.id as string,
+          beforeTimeSlotId: over.id as string,
+        });
+      } else {
+        await setSortOrderAction(eventId, {
+          currentTimeSlotId: active.id as string,
+          afterTimeSlotId: over.id as string,
+        });
+        console.log({
+          currentTimeSlotId: active.id as string,
+          afterTimeSlotId: over.id as string,
+        });
+      }
     }
   }
 
