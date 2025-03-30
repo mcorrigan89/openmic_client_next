@@ -3,5 +3,5 @@ import { env } from "@/env";
 
 export const createClientConfig: CreateClientConfig = (config) => ({
   ...config,
-  baseUrl: env.SERVER_URL,
+  baseUrl: env.NEXT_PUBLIC_SERVER_URL,
 });

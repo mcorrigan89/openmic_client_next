@@ -16,6 +16,7 @@ import {
   setTimeslotMarkerAction,
   deleteTimeslotMarkerAction,
   setSongCountAction,
+  setNowPlayingAction,
 } from "./action";
 import { format } from "date-fns";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/20/solid";
@@ -47,13 +48,16 @@ import { CSS } from "@dnd-kit/utilities";
 import { useState } from "react";
 import { ArtistSearch } from "./artist-search";
 import { Input } from "@/components/input";
+import clsx from "clsx";
 
 interface AdminListItemComponentProps {
   eventId: string;
   idx: number;
   timeDisplay: string;
   timeslot: TimeslotDto;
+  isPlaying: boolean;
   timeMarkerId?: string;
+  setNowPlaying: (eventId: string, slotIndex: number) => void;
   setSongCount: (
     eventId: string,
     timeslotId: string,
@@ -69,7 +73,9 @@ function ListItem({
   idx,
   timeslot,
   timeDisplay,
+  isPlaying,
   timeMarkerId,
+  setNowPlaying,
   setSongCount,
   setTimeForTimeslot,
   deleteTimeslotMarker,
@@ -113,6 +119,25 @@ function ListItem({
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
+      </TableCell>
+      <TableCell>
+        {isPlaying ? (
+          <Button
+            className="w-24 cursor-pointer"
+            color={"emerald"}
+            onClick={() => setNowPlaying(eventId, idx)}
+          >
+            Playing
+          </Button>
+        ) : (
+          <Button
+            className="w-24 cursor-pointer"
+            outline
+            onClick={() => setNowPlaying(eventId, idx)}
+          >
+            Set Now
+          </Button>
+        )}
       </TableCell>
       <TableCell>
         <Dropdown>
@@ -202,6 +227,13 @@ export function AdminListComponent({
     songCount: number
   ) => {
     const eventDto = await setSongCountAction(eventId, timeslotId, songCount);
+    if (eventDto?.time_slots) {
+      setItems(eventDto.time_slots);
+    }
+  };
+
+  const setNowPlaying = async (eventId: string, slotIndex: number) => {
+    const eventDto = await setNowPlayingAction(eventId, slotIndex);
     if (eventDto?.time_slots) {
       setItems(eventDto.time_slots);
     }
@@ -307,8 +339,10 @@ export function AdminListComponent({
                   idx={idx}
                   timeslot={timeslot}
                   timeDisplay={timeDisplay(idx)}
+                  isPlaying={playingDisplay(idx)}
                   timeMarkerId={timeMarkerFromIndex(idx)?.id}
                   setSongCount={setSongCount}
+                  setNowPlaying={setNowPlaying}
                   setTimeForTimeslot={setTimeForTimeslot}
                   deleteTimeslotMarker={deleteTimeslotMarker}
                   removeArtistFromList={removeArtistFromList}

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto, Roboto_Mono } from "next/font/google";
 import "./globals.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ClientAPI } from "@/client-api";
 
 const robotoSans = Roboto({
   variable: "--font-roboto-sans",
@@ -31,7 +33,7 @@ export default function RootLayout({
       <body
         className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}
       >
-        {children}
+        <ClientAPI>{children}</ClientAPI>
       </body>
     </html>
   );

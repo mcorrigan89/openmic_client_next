@@ -142,6 +142,14 @@ export type SessionDto = {
     token: string;
 };
 
+export type SetNowPlayingRequestBody = {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    readonly $schema?: string;
+    index: number;
+};
+
 export type SetSortOrderRequestBody = {
     /**
      * A URL to the JSON Schema for this object.
@@ -467,6 +475,33 @@ export type AddArtistToEventResponses = {
 };
 
 export type AddArtistToEventResponse = AddArtistToEventResponses[keyof AddArtistToEventResponses];
+
+export type SetNowPlayingData = {
+    body: SetNowPlayingRequestBody;
+    path: {
+        event_id: string;
+    };
+    query?: never;
+    url: '/event/{event_id}/now-playing';
+};
+
+export type SetNowPlayingErrors = {
+    /**
+     * Error
+     */
+    default: ErrorModel;
+};
+
+export type SetNowPlayingError = SetNowPlayingErrors[keyof SetNowPlayingErrors];
+
+export type SetNowPlayingResponses = {
+    /**
+     * OK
+     */
+    200: EventDto;
+};
+
+export type SetNowPlayingResponse = SetNowPlayingResponses[keyof SetNowPlayingResponses];
 
 export type RemoveArtistFromEventData = {
     body: RemoveArtistFromEventEventRequestBody;

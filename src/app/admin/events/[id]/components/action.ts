@@ -8,6 +8,7 @@ import {
   deleteTimeslot,
   setSortOrder,
   updateTimeslot,
+  setNowPlaying,
 } from "@/client";
 import { revalidatePath } from "next/cache";
 
@@ -124,4 +125,17 @@ export async function setSortOrderAction(
   });
 
   revalidatePath(`/admin/events/${eventId}`);
+}
+
+export async function setNowPlayingAction(eventId: string, slotIndex: number) {
+  const { data } = await setNowPlaying({
+    path: {
+      event_id: eventId,
+    },
+    body: {
+      index: slotIndex,
+    },
+  });
+  revalidatePath(`/admin/events/${eventId}`);
+  return data;
 }
