@@ -28,7 +28,6 @@ export function AddEventDialog() {
       [state]
     ),
     onSubmit: (props) => {
-      console.log(props);
       props.formApi.reset();
     },
   });
@@ -41,13 +40,7 @@ export function AddEventDialog() {
         Add New Event
       </Button>
       <Dialog open={isOpen} onClose={setIsOpen}>
-        <form
-          action={(f) => {
-            console.log("FORM ", f);
-            return action(f);
-          }}
-          onSubmit={() => form.handleSubmit()}
-        >
+        <form action={action} onSubmit={() => form.handleSubmit()}>
           <DialogTitle>Create a new event</DialogTitle>
           {/* <DialogDescription>
             The refund will be reflected in the customer’s bank account 2 to 3
@@ -81,9 +74,9 @@ export function AddEventDialog() {
               children={({ state, setValue }) => (
                 <>
                   <input
-                    defaultValue={state.value.toISOString().split("T")[0]}
+                    defaultValue={state.value?.toISOString()}
                     className="hidden"
-                    type="date"
+                    type="text"
                     name="date"
                   />
                   <DatePicker

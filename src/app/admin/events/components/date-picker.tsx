@@ -1,4 +1,5 @@
 "use client";
+import { TZDate } from "@date-fns/tz";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 // import { useState } from "react";
 import clsx from "clsx";
@@ -15,19 +16,15 @@ import { useState } from "react";
 
 function getDaysInMonth(date: Date) {
   const days = [];
-  const monthStart = startOfMonth(date);
+  const tzDate = new TZDate(date, "America/Chicago");
+  const monthStart = startOfMonth(tzDate);
   let start = startOfWeek(monthStart);
-  const monthEnd = endOfMonth(date);
+  const monthEnd = endOfMonth(tzDate);
   const end = endOfWeek(monthEnd);
 
   while (start <= end) {
     days.push({
-      date: new Date(
-        `${start.getFullYear()}-${start.getMonth() + 1}-${start
-          .getDate()
-          .toString()
-          .padStart(2, "0")}`
-      ),
+      date: start,
       isCurrentMonth: true,
       isToday: isSameDay(start, new Date()),
     });
