@@ -81,9 +81,9 @@ export function AddEventDialog() {
               children={({ state, setValue }) => (
                 <>
                   <input
-                    defaultValue={state.value}
+                    defaultValue={state.value.toISOString().split("T")[0]}
                     className="hidden"
-                    type="text"
+                    type="date"
                     name="date"
                   />
                   <DatePicker
