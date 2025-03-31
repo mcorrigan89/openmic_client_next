@@ -34,7 +34,7 @@ export function TimeslotComponent({ idx, timeslot, markers }: TimeslotProps) {
         </div>
         <div>
           <span className="text-emerald-700 font-bold">
-            {nowPlaying ? "Playing" : ""}
+            {nowPlaying ? "Now Playing" : ""}
           </span>
         </div>
       </div>

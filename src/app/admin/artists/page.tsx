@@ -2,6 +2,8 @@ import { ArtistDto, getAllArtists } from "@/client";
 import Link from "next/link";
 import { AddArtistDialog } from "./components/add-dialog";
 
+export const dynamic = "force-dynamic";
+
 function ArtistComponent({ artist }: { artist: ArtistDto }) {
   return (
     <Link

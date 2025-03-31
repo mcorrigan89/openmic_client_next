@@ -33,7 +33,7 @@ export default function AdminLayout({
               <SidebarSection>
                 <SidebarItem href="/admin/events">Events</SidebarItem>
                 <SidebarItem href="/admin/artists">Artists</SidebarItem>
-                <SidebarItem href="/">Landing Page</SidebarItem>
+                <SidebarItem href="/schedule">Landing Page</SidebarItem>
                 <SidebarItem href="/now">Now Playing</SidebarItem>
               </SidebarSection>
             </SidebarBody>
