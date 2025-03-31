@@ -9,6 +9,8 @@ import {
 import { AddEventDialog } from "./components/add-dialog";
 import { EventListComponent } from "./components/list-item";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminEventsPage() {
   const { data, error } = await getEvents();
 
