@@ -81,6 +81,7 @@ export default async function AdminEventPage({ params }: EventPageProps) {
             markers={eventData.time_markers ?? []}
             timeslots={eventData.time_slots}
             eventId={eventData.id}
+            eventType={eventData.event_type}
           />
         ) : null}
       </div>

@@ -23,6 +23,11 @@ function EventComponent({ event }: EventComponentProps) {
     "h:mma"
   );
 
+  const timeMarkerFromSlotIndex = (slotIndex: number) => {
+    return event.time_markers?.find((marker) => marker.slot_index === slotIndex)
+      ?.display;
+  };
+
   switch (event.event_type) {
     case "OPEN_MIC":
       return (
@@ -43,6 +48,13 @@ function EventComponent({ event }: EventComponentProps) {
           </div>
           <div className="font-semibold text-red-800 dark:text-red-500">
             Artist Showcase
+          </div>
+          <div className="flex flex-col gap-1 mt-2 pl-4">
+            {event.time_slots?.map((slot, idx) => (
+              <div key={slot.id} className="text-slate-900 font-medium">
+                {slot.artist.title}: {timeMarkerFromSlotIndex(idx)}
+              </div>
+            ))}
           </div>
         </div>
       );

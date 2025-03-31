@@ -45,13 +45,32 @@ import {
 } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArtistSearch } from "./artist-search";
 import { Input } from "@/components/input";
 import clsx from "clsx";
 import { TZDate } from "@date-fns/tz";
 
-interface AdminListItemComponentProps {
+function AdminOpenMicTableHead() {
+  return (
+    <TableHead>
+      <TableRow>
+        <TableHeader>Grab</TableHeader>
+        <TableHeader>Title</TableHeader>
+        {/* <TableHeader className="hidden md:table-cell">
+              Title Override
+            </TableHeader> */}
+        <TableHeader className="hidden md:table-cell">Est. Time</TableHeader>
+        <TableHeader>Songs</TableHeader>
+        <TableHeader>Time</TableHeader>
+        <TableHeader>Now Playing</TableHeader>
+        <TableHeader>Remove</TableHeader>
+      </TableRow>
+    </TableHead>
+  );
+}
+
+interface AdminOpenMicListItemComponentProps {
   eventId: string;
   idx: number;
   timeDisplay: string;
@@ -69,7 +88,7 @@ interface AdminListItemComponentProps {
   removeArtistFromList: (artist: ArtistDto, eventId: string) => void;
 }
 
-function ListItem({
+function OpenMicListItem({
   eventId,
   idx,
   timeslot,
@@ -81,7 +100,7 @@ function ListItem({
   setTimeForTimeslot,
   deleteTimeslotMarker,
   removeArtistFromList,
-}: AdminListItemComponentProps) {
+}: AdminOpenMicListItemComponentProps) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: timeslot.id });
 
@@ -181,11 +200,115 @@ function ListItem({
   );
 }
 
+function AdminShowcaseTableHead() {
+  return (
+    <TableHead>
+      <TableRow>
+        <TableHeader>Grab</TableHeader>
+        <TableHeader>Title</TableHeader>
+        {/* <TableHeader className="hidden md:table-cell">
+              Title Override
+            </TableHeader> */}
+        <TableHeader>Songs</TableHeader>
+        <TableHeader>Time</TableHeader>
+        <TableHeader>Remove</TableHeader>
+      </TableRow>
+    </TableHead>
+  );
+}
+
+interface AdminShowcaseListItemComponentProps {
+  eventId: string;
+  idx: number;
+  timeDisplay: string;
+  timeslot: TimeslotDto;
+  isPlaying: boolean;
+  setNowPlaying: (eventId: string, slotIndex: number) => void;
+  setTimeForTimeslot: (time: string, slotIndex: number) => void;
+  deleteTimeslotMarker: (timeslotMarkerId?: string) => void;
+  removeArtistFromList: (artist: ArtistDto, eventId: string) => void;
+}
+
+function ShowcaseListItem({
+  eventId,
+  idx,
+  timeslot,
+  timeDisplay,
+  isPlaying,
+  setNowPlaying,
+  setTimeForTimeslot,
+  removeArtistFromList,
+}: AdminShowcaseListItemComponentProps) {
+  const [time, setTime] = useState(timeDisplay);
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: timeslot.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <TableRow key={timeslot.id} ref={setNodeRef} style={style}>
+      <TableCell {...attributes} {...listeners}>
+        <Squares2X2Icon className="h-10 lg:h-6 cursor-grab" />
+      </TableCell>
+      <TableCell className="font-medium">{timeslot.artist.title}</TableCell>
+      {/* <TableCell className="hidden md:table-cell">
+        {timeslot.artist.title}
+      </TableCell> */}
+      <TableCell>
+        {isPlaying ? (
+          <Button
+            className="w-24 cursor-pointer"
+            color={"emerald"}
+            onClick={() => setNowPlaying(eventId, idx)}
+          >
+            Playing
+          </Button>
+        ) : (
+          <Button
+            className="w-24 cursor-pointer"
+            outline
+            onClick={() => setNowPlaying(eventId, idx)}
+          >
+            Set Now
+          </Button>
+        )}
+      </TableCell>
+      <TableCell>
+        <div className="flex gap-4">
+          <span className="w-24">
+            <Input
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              onBlurCapture={() => setTimeForTimeslot(time, idx)}
+            />
+          </span>
+          <Button color={"cyan"} onClick={() => setTimeForTimeslot(time, idx)}>
+            Update
+          </Button>
+        </div>
+      </TableCell>
+      <TableCell className="text-zinc-500">
+        <Button
+          onClick={() => removeArtistFromList(timeslot.artist, eventId)}
+          outline
+          className="cursor-pointer"
+        >
+          <XMarkIcon />
+        </Button>
+      </TableCell>
+    </TableRow>
+  );
+}
+
 interface AdminListComponentProps {
   eventId: string;
   markers: TimesMarkerDto[];
   timeslots: TimeslotDto[];
   artists: ArtistDto[];
+  eventType: string;
 }
 
 export function AdminListComponent({
@@ -193,6 +316,7 @@ export function AdminListComponent({
   markers,
   eventId,
   artists,
+  eventType,
 }: AdminListComponentProps) {
   const [items, setItems] = useState(timeslots);
 
@@ -315,41 +439,50 @@ export function AdminListComponent({
           striped
           className="[--gutter:--spacing(6)] sm:[--gutter:--spacing(8)]"
         >
-          <TableHead>
-            <TableRow>
-              <TableHeader>Grab</TableHeader>
-              <TableHeader>Title</TableHeader>
-              {/* <TableHeader className="hidden md:table-cell">
-              Title Override
-            </TableHeader> */}
-              <TableHeader className="hidden md:table-cell">
-                Est. Time
-              </TableHeader>
-              <TableHeader>Songs</TableHeader>
-              <TableHeader>Time</TableHeader>
-              <TableHeader>Remove</TableHeader>
-            </TableRow>
-          </TableHead>
+          {eventType === "OPEN_MIC" ? (
+            <AdminOpenMicTableHead />
+          ) : (
+            <AdminShowcaseTableHead />
+          )}
 
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            <TableBody>
-              {items.map((timeslot, idx) => (
-                <ListItem
-                  key={timeslot.id}
-                  eventId={eventId}
-                  idx={idx}
-                  timeslot={timeslot}
-                  timeDisplay={timeDisplay(idx)}
-                  isPlaying={playingDisplay(idx)}
-                  timeMarkerId={timeMarkerFromIndex(idx)?.id}
-                  setSongCount={setSongCount}
-                  setNowPlaying={setNowPlaying}
-                  setTimeForTimeslot={setTimeForTimeslot}
-                  deleteTimeslotMarker={deleteTimeslotMarker}
-                  removeArtistFromList={removeArtistFromList}
-                />
-              ))}
-            </TableBody>
+            {eventType === "OPEN_MIC" ? (
+              <TableBody>
+                {items.map((timeslot, idx) => (
+                  <OpenMicListItem
+                    key={timeslot.id}
+                    eventId={eventId}
+                    idx={idx}
+                    timeslot={timeslot}
+                    timeDisplay={timeDisplay(idx)}
+                    isPlaying={playingDisplay(idx)}
+                    timeMarkerId={timeMarkerFromIndex(idx)?.id}
+                    setSongCount={setSongCount}
+                    setNowPlaying={setNowPlaying}
+                    setTimeForTimeslot={setTimeForTimeslot}
+                    deleteTimeslotMarker={deleteTimeslotMarker}
+                    removeArtistFromList={removeArtistFromList}
+                  />
+                ))}
+              </TableBody>
+            ) : (
+              <TableBody>
+                {items.map((timeslot, idx) => (
+                  <ShowcaseListItem
+                    key={timeslot.id}
+                    eventId={eventId}
+                    idx={idx}
+                    timeslot={timeslot}
+                    timeDisplay={timeDisplay(idx)}
+                    isPlaying={playingDisplay(idx)}
+                    setNowPlaying={setNowPlaying}
+                    setTimeForTimeslot={setTimeForTimeslot}
+                    deleteTimeslotMarker={deleteTimeslotMarker}
+                    removeArtistFromList={removeArtistFromList}
+                  />
+                ))}
+              </TableBody>
+            )}
           </SortableContext>
         </Table>
       </DndContext>

@@ -36,6 +36,7 @@ export default async function AdminEventsPage() {
               <TableHeader>Event Type</TableHeader>
               <TableHeader className="hidden md:block">Date</TableHeader>
               <TableHeader>Go to admin page</TableHeader>
+              <TableHeader>Remove Event</TableHeader>
             </TableRow>
           </TableHead>
           <TableBody>
