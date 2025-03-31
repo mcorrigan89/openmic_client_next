@@ -31,7 +31,6 @@ export default function AdminLayout({
             </SidebarHeader>
             <SidebarBody>
               <SidebarSection>
-                <SidebarItem href="/admin">Home</SidebarItem>
                 <SidebarItem href="/admin/events">Events</SidebarItem>
                 <SidebarItem href="/admin/artists">Artists</SidebarItem>
                 <SidebarItem href="/">Landing Page</SidebarItem>

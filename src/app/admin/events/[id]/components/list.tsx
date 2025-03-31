@@ -90,8 +90,6 @@ function ListItem({
     transition,
   };
 
-  console.log(timeslot.time_display);
-
   return (
     <TableRow key={timeslot.id} ref={setNodeRef} style={style}>
       <TableCell {...attributes} {...listeners}>

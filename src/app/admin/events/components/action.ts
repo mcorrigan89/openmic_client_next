@@ -7,8 +7,8 @@ import {
 import { formOpts } from "./shared";
 import { revalidatePath } from "next/cache";
 import { createEvent, deleteEvent } from "@/client";
-import { addHours, setHours } from "date-fns";
-import { tz } from "@date-fns/tz";
+import { addHours, addMinutes, setHours } from "date-fns";
+import { tz, TZDate } from "@date-fns/tz";
 
 const serverValidate = createServerValidate({
   ...formOpts,
@@ -34,16 +34,26 @@ export async function addEventAction(prev: unknown, formData: FormData) {
     throw e;
   }
 
+  const eventType = formData.get("type") as string;
+
   const startDateString = formData.get("date") as string;
   const startDate = new Date(startDateString);
   const tzStartDate = tz("America/Chicago")(startDate);
 
-  const tzDateTime = setHours(tzStartDate, 18);
-  const tzEndDateTime = addHours(tzDateTime, 5);
+  let tzDateTime: TZDate;
+  let tzEndDateTime: TZDate;
+  if (eventType === "OPEN_MIC") {
+    tzDateTime = setHours(tzStartDate, 18);
+    tzEndDateTime = addHours(tzDateTime, 5);
+  } else {
+    tzDateTime = setHours(tzStartDate, 19);
+    tzEndDateTime = addHours(tzDateTime, 2);
+    tzEndDateTime = addMinutes(tzEndDateTime, 30);
+  }
 
   await createEvent({
     body: {
-      event_type: formData.get("type") as string,
+      event_type: eventType,
       start_time: tzDateTime.toISOString(),
       end_time: tzEndDateTime.toISOString(),
     },
