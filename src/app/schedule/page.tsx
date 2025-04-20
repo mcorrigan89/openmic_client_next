@@ -75,7 +75,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="container mx-auto w-full sm:w-2/3 lg:w-1/2">
+    <div className="container mx-auto w-full sm:w-2/3 lg:w-1/2 p-4">
       <Header />
       <div className="pt-12 flex gap-4 flex-col">
         {data.map((event) => {

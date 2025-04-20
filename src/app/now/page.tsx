@@ -27,7 +27,7 @@ export default async function NowPlayingPage() {
   const date = format(new Date(data.start_time), "MMMM do, yyyy");
 
   return (
-    <div className="container mx-auto w-full lg:w-2/3 xl:w-1/2">
+    <div className="container mx-auto w-full lg:w-2/3 xl:w-1/2 p-4">
       <div className="h-8" />
       {data.time_slots ? (
         <ListComponent event={data} dateString={date} />
