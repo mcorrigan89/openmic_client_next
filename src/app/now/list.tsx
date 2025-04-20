@@ -4,6 +4,7 @@ import { getEventOptions } from "@/client/@tanstack/react-query.gen";
 import Image from "next/image";
 import clsx from "clsx";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 
 interface TimeslotProps {
   idx: number;
@@ -67,7 +68,14 @@ export function ListComponent({ event }: ListProps) {
             alt="OpenMic MPLS Logo"
           />
         </div>
-        <div className="text-xl text-center">Mondays 6pm-11</div>
+        <div className="text-xl text-center">OpenMic: Mondays 6pm-11</div>
+        <div className="text-xl text-center">
+          Artist Showcase: Tuesdays 7pm-930
+        </div>
+
+        <div className="text-xl text-center">
+          <Link href={"/schedule"}>Schedule & Info</Link>
+        </div>
       </div>
       <div className="flex flex-col md:w-1/2 w-2/3">
         {(data.time_slots ?? []).map((timeslot, idx) => {

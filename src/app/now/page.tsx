@@ -17,7 +17,7 @@ export default async function NowPlayingPage() {
       <div className="flex flex-col justify-center items-center h-screen gap-8">
         <div className="text-slate-900 font-bold">No Current Events</div>
         <div>
-          <Link href={"/schedule"}>Click Here for Schedule</Link>
+          <Link href={"/schedule"}>Click Here for Schedule & Info</Link>
         </div>
       </div>
     );

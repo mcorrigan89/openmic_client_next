@@ -52,7 +52,10 @@ function EventComponent({ event }: EventComponentProps) {
           <div className="flex flex-col gap-1 mt-2 pl-4">
             {event.time_slots?.map((slot, idx) => (
               <div key={slot.id} className="text-slate-900 font-medium">
-                {slot.artist.title}: {timeMarkerFromSlotIndex(idx)}
+                <span className="text-lg font-semibold sans-serif">
+                  {timeMarkerFromSlotIndex(idx)}
+                </span>
+                {" - "} {slot.artist.title}
               </div>
             ))}
           </div>

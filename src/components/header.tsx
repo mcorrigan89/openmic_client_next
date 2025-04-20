@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "./button";
 
 export function Header() {
   return (
@@ -9,6 +11,14 @@ export function Header() {
         height={374}
         alt="Open Mic"
       />
+      <div className="mb-8 flex justify-center">
+        <Link
+          href={"/info"}
+          className="text-2xl border-2 border-slate-700 rounded-xl p-2"
+        >
+          Details about OpenMic signup & policies
+        </Link>
+      </div>
       <div className="flex flex-col gap-2 mx-12">
         <p className="font-semibold text-lg">OpenMic: MONDAYS 6pm-11</p>
         <p className="text-md">

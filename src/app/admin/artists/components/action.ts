@@ -18,7 +18,6 @@ const serverValidate = createServerValidate({
 });
 
 export async function addArtistAction(prev: unknown, formData: FormData) {
-  console.log(formData);
   try {
     await serverValidate(formData);
   } catch (e) {
