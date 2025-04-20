@@ -63,7 +63,7 @@ export function ListComponent({ event, dateString }: ListProps) {
   return (
     <div className="flex flex-row space-y-4 gap-2 justify-center md:justify-between relative">
       <div className="flex-col w-1/2 md:flex">
-        <div className="flex justify-center font-semibold text-4xl">
+        <div className="flex justify-center font-semibold text-center md:text-4xl text-xl">
           {dateString}
         </div>
         <div>
@@ -83,7 +83,7 @@ export function ListComponent({ event, dateString }: ListProps) {
             7pm-930
           </div>
 
-          <div className="text-xl text-center my-4">
+          <div className="text-xl text-center mt-4 mb-16">
             <Link
               className="font-semibold underline text-blue-600"
               href={"/schedule"}
