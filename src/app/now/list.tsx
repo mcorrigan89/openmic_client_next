@@ -22,7 +22,9 @@ export function TimeslotComponent({ idx, timeslot, markers }: TimeslotProps) {
   );
   return (
     <div className="flex">
-      <div className="w-10 h-4 mr-4 text-sm">{currentMarker?.display}</div>
+      <div className="w-10 h-4 mr-4 text-sm font-semibold">
+        {currentMarker?.display}
+      </div>
       <div
         className={clsx(
           "text-sm flex justify-between w-full",
@@ -45,9 +47,10 @@ export function TimeslotComponent({ idx, timeslot, markers }: TimeslotProps) {
 
 interface ListProps {
   event: EventDto;
+  dateString: string;
 }
 
-export function ListComponent({ event }: ListProps) {
+export function ListComponent({ event, dateString }: ListProps) {
   const { data, error } = useQuery({
     ...getEventOptions({
       path: {
@@ -60,6 +63,9 @@ export function ListComponent({ event }: ListProps) {
   return (
     <div className="flex flex-row space-y-4 gap-2 justify-center md:justify-between relative">
       <div className="flex-col w-1/2 md:flex">
+        <div className="flex justify-center font-semibold text-4xl">
+          {dateString}
+        </div>
         <div>
           <Image
             src={"/OpenMicMpls_Logo.png"}
@@ -68,13 +74,31 @@ export function ListComponent({ event }: ListProps) {
             alt="OpenMic MPLS Logo"
           />
         </div>
-        <div className="text-xl text-center">OpenMic: Mondays 6pm-11</div>
-        <div className="text-xl text-center">
-          Artist Showcase: Tuesdays 7pm-930
-        </div>
+        <div className="flex flex-col">
+          <div className="text-xl text-center">
+            <span className="font-semibold">OpenMic:</span> Mondays 6pm-11
+          </div>
+          <div className="text-xl text-center">
+            <span className="font-semibold">Artist Showcase:</span> Tuesdays
+            7pm-930
+          </div>
 
-        <div className="text-xl text-center">
-          <Link href={"/schedule"}>Schedule & Info</Link>
+          <div className="text-xl text-center my-4">
+            <Link
+              className="font-semibold underline text-blue-600"
+              href={"/schedule"}
+            >
+              Schedule & Info
+            </Link>
+          </div>
+          <div className="flex justify-center">
+            <Image
+              src={"/qr.png"}
+              height={280}
+              width={280}
+              alt="Link to schedule"
+            />
+          </div>
         </div>
       </div>
       <div className="flex flex-col md:w-1/2 w-2/3">

@@ -41,11 +41,8 @@ export function AddArtistDialog() {
       </Button>
       <Dialog open={isOpen} onClose={setIsOpen}>
         <form action={action as never} onSubmit={() => form.handleSubmit()}>
-          <DialogTitle>Refund payment</DialogTitle>
-          <DialogDescription>
-            The refund will be reflected in the customer’s bank account 2 to 3
-            business days after processing.
-          </DialogDescription>
+          <DialogTitle>Add Artist</DialogTitle>
+          <DialogDescription>someone new</DialogDescription>
           <DialogBody>
             {formErrors.map((error) => (
               <p key={error as unknown as string}>{error}</p>
@@ -91,7 +88,7 @@ export function AddArtistDialog() {
             >
               {([canSubmit, isSubmitting]) => (
                 <>
-                  <DialogActions className="flex">
+                  <DialogActions className="flex focus:outline-purple-500">
                     <Button plain onClick={() => setIsOpen(false)}>
                       Close
                     </Button>

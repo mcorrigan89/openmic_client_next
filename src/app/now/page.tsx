@@ -2,6 +2,7 @@ import { getCurrentEvent } from "@/client";
 import { ListComponent } from "@/app/now/list";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { format } from "date-fns";
 
 export const dynamic = "force-dynamic";
 
@@ -23,10 +24,14 @@ export default async function NowPlayingPage() {
     );
   }
 
+  const date = format(new Date(data.start_time), "MMMM do, yyyy");
+
   return (
     <div className="container mx-auto w-full lg:w-2/3 xl:w-1/2">
       <div className="h-8" />
-      {data.time_slots ? <ListComponent event={data} /> : null}
+      {data.time_slots ? (
+        <ListComponent event={data} dateString={date} />
+      ) : null}
     </div>
   );
 }
