@@ -76,14 +76,18 @@ export function ListComponent({ event, dateString }: ListProps) {
         </div>
         <div className="flex flex-col">
           <div className="flex flex-col text-center">
-            <span className="text-xl font-semibold">OpenMic:</span>
+            <span className="text-lg md:text-xl line-clamp-1 font-semibold">
+              OpenMic:
+            </span>
 
-            <span className="text-sm md:text-base">Mondays 6pm-11</span>
+            <span className="text-md md:text-base">Mondays 6pm-11</span>
           </div>
           <div className=" text-center">
-            <span className="text-xl font-semibold">Artist Showcase:</span>
+            <span className="text-lg md:text-xl line-clamp-1 font-semibold">
+              Artist Showcase:
+            </span>
 
-            <span className="text-sm md:text-base">Tuesdays 7pm-930</span>
+            <span className="text-md md:text-base">Tuesdays 7pm-930</span>
           </div>
 
           <div className="text-xl text-center mt-4 mb-16">
