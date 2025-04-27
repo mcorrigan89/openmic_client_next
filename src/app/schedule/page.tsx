@@ -1,8 +1,10 @@
 import { EventDto, getEvents } from "@/client";
+import { Button } from "@/components/button";
 import { Divider } from "@/components/divider";
 import { Header } from "@/components/header";
 import { TZDate } from "@date-fns/tz";
 import { format } from "date-fns";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -31,33 +33,55 @@ function EventComponent({ event }: EventComponentProps) {
   switch (event.event_type) {
     case "OPEN_MIC":
       return (
-        <div>
-          <div className="font-semibold text-lg text-emerald-800 dark:text-emerald-500">
-            {startDate}
+        <div className="flex flex-row justify-between">
+          <div>
+            <div className="font-semibold text-lg text-emerald-800 dark:text-emerald-500">
+              {startDate}
+            </div>
+            <div className="font-semibold text-red-800 dark:text-red-500">
+              OpenMic: {startTime} - {endTime}
+            </div>
           </div>
-          <div className="font-semibold text-red-800 dark:text-red-500">
-            OpenMic: {startTime} - {endTime}
+          <div>
+            {event.is_current ? (
+              <Link href={`/now`}>
+                <Button className="cursor-pointer" outline>
+                  View List
+                </Button>
+              </Link>
+            ) : null}
           </div>
         </div>
       );
     case "ARTIST_SHOWCASE":
       return (
-        <div>
-          <div className="font-semibold text-lg text-emerald-800 dark:text-emerald-500">
-            {startDate}
+        <div className="flex flex-row justify-between">
+          <div>
+            <div className="font-semibold text-lg text-emerald-800 dark:text-emerald-500">
+              {startDate}
+            </div>
+            <div className="font-semibold text-red-800 dark:text-red-500">
+              Artist Showcase
+            </div>
+            <div className="flex flex-col gap-1 mt-2 pl-4">
+              {event.time_slots?.map((slot, idx) => (
+                <div key={slot.id} className="text-slate-900 font-medium">
+                  <span className="text-lg font-semibold sans-serif">
+                    {timeMarkerFromSlotIndex(idx)}
+                  </span>
+                  {" - "} {slot.artist.title}
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="font-semibold text-red-800 dark:text-red-500">
-            Artist Showcase
-          </div>
-          <div className="flex flex-col gap-1 mt-2 pl-4">
-            {event.time_slots?.map((slot, idx) => (
-              <div key={slot.id} className="text-slate-900 font-medium">
-                <span className="text-lg font-semibold sans-serif">
-                  {timeMarkerFromSlotIndex(idx)}
-                </span>
-                {" - "} {slot.artist.title}
-              </div>
-            ))}
+          <div>
+            {event.is_current ? (
+              <Link href={`/now`}>
+                <Button className="cursor-pointer" outline>
+                  View List
+                </Button>
+              </Link>
+            ) : null}
           </div>
         </div>
       );

@@ -120,6 +120,7 @@ export type EventDto = {
     end_time: string;
     event_type: string;
     id: string;
+    is_current: boolean;
     start_time: string;
     time_markers: Array<TimesMarkerDto> | null;
     time_slots: Array<TimeslotDto> | null;
@@ -557,7 +558,7 @@ export type SetSortOrderResponses = {
 
 export type SetSortOrderResponse = SetSortOrderResponses[keyof SetSortOrderResponses];
 
-export type DeleteTimeslotData = {
+export type DeleteTimeslotMarkerData = {
     body: DeleteTimeslotMarkerRequestBody;
     path: {
         event_id: string;
@@ -566,25 +567,25 @@ export type DeleteTimeslotData = {
     url: '/event/{event_id}/timeslot/marker';
 };
 
-export type DeleteTimeslotErrors = {
+export type DeleteTimeslotMarkerErrors = {
     /**
      * Error
      */
     default: ErrorModel;
 };
 
-export type DeleteTimeslotError = DeleteTimeslotErrors[keyof DeleteTimeslotErrors];
+export type DeleteTimeslotMarkerError = DeleteTimeslotMarkerErrors[keyof DeleteTimeslotMarkerErrors];
 
-export type DeleteTimeslotResponses = {
+export type DeleteTimeslotMarkerResponses = {
     /**
      * OK
      */
     200: EventDto;
 };
 
-export type DeleteTimeslotResponse = DeleteTimeslotResponses[keyof DeleteTimeslotResponses];
+export type DeleteTimeslotMarkerResponse = DeleteTimeslotMarkerResponses[keyof DeleteTimeslotMarkerResponses];
 
-export type SetTimeslotData = {
+export type SetTimeslotMarkerData = {
     body: SetTimeslotMarkerRequestBody;
     path: {
         event_id: string;
@@ -593,23 +594,23 @@ export type SetTimeslotData = {
     url: '/event/{event_id}/timeslot/marker';
 };
 
-export type SetTimeslotErrors = {
+export type SetTimeslotMarkerErrors = {
     /**
      * Error
      */
     default: ErrorModel;
 };
 
-export type SetTimeslotError = SetTimeslotErrors[keyof SetTimeslotErrors];
+export type SetTimeslotMarkerError = SetTimeslotMarkerErrors[keyof SetTimeslotMarkerErrors];
 
-export type SetTimeslotResponses = {
+export type SetTimeslotMarkerResponses = {
     /**
      * OK
      */
     200: EventDto;
 };
 
-export type SetTimeslotResponse = SetTimeslotResponses[keyof SetTimeslotResponses];
+export type SetTimeslotMarkerResponse = SetTimeslotMarkerResponses[keyof SetTimeslotMarkerResponses];
 
 export type UpdateTimeslotData = {
     body: UpdateTimeSlotRequestBody;
