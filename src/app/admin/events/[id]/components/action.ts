@@ -4,8 +4,8 @@ import {
   ArtistDto,
   addArtistToEvent,
   removeArtistFromEvent,
-  setTimeslot,
-  deleteTimeslot,
+  setTimeslotMarker,
+  deleteTimeslotMarker,
   setSortOrder,
   updateTimeslot,
   setNowPlaying,
@@ -74,7 +74,7 @@ export async function setTimeslotMarkerAction(
   timeDisplay: string,
   slotIndex: number
 ) {
-  const { data } = await setTimeslot({
+  const { data } = await setTimeslotMarker({
     path: {
       event_id: eventId,
     },
@@ -92,7 +92,7 @@ export async function deleteTimeslotMarkerAction(
   eventId: string,
   timeslotMarkerId: string
 ) {
-  const { data } = await deleteTimeslot({
+  const { data } = await deleteTimeslotMarker({
     path: {
       event_id: eventId,
     },
