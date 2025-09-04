@@ -39,7 +39,7 @@ function EventComponent({ event }: EventComponentProps) {
               {startDate}
             </div>
             <div className="font-semibold text-red-800 dark:text-red-500">
-              OpenMic: {startTime} - {endTime}
+              OpenMic at Sociable Cider: {startTime} - {endTime}
             </div>
           </div>
           <div>
@@ -93,7 +93,7 @@ function EventComponent({ event }: EventComponentProps) {
               {startDate}
             </div>
             <div className="font-semibold text-blue-800 dark:text-blue-500">
-              Open Mic at Fair State: {startTime} - {endTime}
+              OpenMic at Fair State: {startTime} - {endTime}
             </div>
           </div>
           <div>
