@@ -85,6 +85,29 @@ function EventComponent({ event }: EventComponentProps) {
           </div>
         </div>
       );
+    case "OPEN_MIC_FAIR": {
+      return (
+        <div className="flex flex-row justify-between">
+          <div>
+            <div className="font-semibold text-lg text-emerald-800 dark:text-emerald-500">
+              {startDate}
+            </div>
+            <div className="font-semibold text-blue-800 dark:text-blue-500">
+              Open Mic at Fair State: {startTime} - {endTime}
+            </div>
+          </div>
+          <div>
+            {event.is_current ? (
+              <Link href={`/now`}>
+                <Button className="cursor-pointer" outline>
+                  View List
+                </Button>
+              </Link>
+            ) : null}
+          </div>
+        </div>
+      );
+    }
   }
 }
 

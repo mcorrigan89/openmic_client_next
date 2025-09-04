@@ -22,12 +22,16 @@ export function EventListComponent({ event }: EventComponentProps) {
   let eventTypeColor = "";
   switch (event.event_type) {
     case "OPEN_MIC":
-      eventType = "Open Mic";
+      eventType = "Open Mic at Sociable Cider";
       eventTypeColor = "text-red-800 dark:text-red-500";
       break;
     case "ARTIST_SHOWCASE":
       eventType = "Artist Showcase";
       eventTypeColor = "text-emerald-800 dark:text-emerald-500";
+      break;
+    case "OPEN_MIC_FAIR":
+      eventType = "Open Mic at Fair State";
+      eventTypeColor = "text-blue-800 dark:text-blue-500";
       break;
   }
 

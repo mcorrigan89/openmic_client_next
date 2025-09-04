@@ -61,8 +61,13 @@ export function AddEventDialog() {
                       value={field.state.value ?? ""}
                       onChange={(e) => field.handleChange(e.target.value)}
                     >
-                      <option value="OPEN_MIC">Open Mic</option>
+                      <option value="OPEN_MIC">
+                        Open Mic at Sociable Cider
+                      </option>
                       <option value="ARTIST_SHOWCASE">Showcase</option>
+                      <option value="OPEN_MIC_FAIR">
+                        Open Mic at Fair State
+                      </option>
                     </Select>
                   </Field>
                 );

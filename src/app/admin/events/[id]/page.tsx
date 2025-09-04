@@ -28,10 +28,13 @@ export default async function AdminEventPage({ params }: EventPageProps) {
   let eventType = "";
   switch (eventData.event_type) {
     case "OPEN_MIC":
-      eventType = "Open Mic";
+      eventType = "Open Mic at Sociable Cider";
       break;
     case "ARTIST_SHOWCASE":
       eventType = "Artist Showcase";
+      break;
+    case "OPEN_MIC_FAIR":
+      eventType = "Open Mic at Fair State";
       break;
   }
 
