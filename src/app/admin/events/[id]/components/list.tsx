@@ -439,14 +439,14 @@ export function AdminListComponent({
           striped
           className="[--gutter:--spacing(6)] sm:[--gutter:--spacing(8)]"
         >
-          {eventType === "OPEN_MIC" ? (
+          {eventType === "OPEN_MIC" || eventType === "OPEN_MIC_FAIR" ? (
             <AdminOpenMicTableHead />
           ) : (
             <AdminShowcaseTableHead />
           )}
 
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            {eventType === "OPEN_MIC" ? (
+            {eventType === "OPEN_MIC" || eventType === "OPEN_MIC_FAIR" ? (
               <TableBody>
                 {items.map((timeslot, idx) => (
                   <OpenMicListItem
