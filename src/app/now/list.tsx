@@ -76,7 +76,7 @@ export function ListComponent({ event, dateString }: ListProps) {
           />
         </div>
         <div className="flex flex-col">
-          {data.event_type === "OPEN_MIC_FAIR" && (
+          {data.event_type !== "OPEN_MIC_FAIR" && (
             <div className="flex flex-col text-center">
               <span className="text-lg md:text-xl line-clamp-1 font-semibold">
                 OpenMic:
@@ -85,7 +85,7 @@ export function ListComponent({ event, dateString }: ListProps) {
               <span className="text-md md:text-base">Mondays 6pm-11</span>
             </div>
           )}
-          {data.event_type === "OPEN_MIC_FAIR" && (
+          {data.event_type !== "OPEN_MIC_FAIR" && (
             <div className=" text-center">
               <span className="text-lg md:text-xl line-clamp-1 font-semibold">
                 Artist Showcase:
