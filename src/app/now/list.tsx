@@ -60,6 +60,7 @@ export function ListComponent({ event, dateString }: ListProps) {
     initialData: event,
     refetchInterval: 1000,
   });
+
   return (
     <div className="flex flex-row space-y-4 gap-2 justify-center md:justify-between relative">
       <div className="flex-col w-1/2 md:flex">
@@ -75,20 +76,24 @@ export function ListComponent({ event, dateString }: ListProps) {
           />
         </div>
         <div className="flex flex-col">
-          <div className="flex flex-col text-center">
-            <span className="text-lg md:text-xl line-clamp-1 font-semibold">
-              OpenMic:
-            </span>
+          {data.event_type === "OPEN_MIC_FAIR" && (
+            <div className="flex flex-col text-center">
+              <span className="text-lg md:text-xl line-clamp-1 font-semibold">
+                OpenMic:
+              </span>
 
-            <span className="text-md md:text-base">Mondays 6pm-11</span>
-          </div>
-          <div className=" text-center">
-            <span className="text-lg md:text-xl line-clamp-1 font-semibold">
-              Artist Showcase:
-            </span>
+              <span className="text-md md:text-base">Mondays 6pm-11</span>
+            </div>
+          )}
+          {data.event_type === "OPEN_MIC_FAIR" && (
+            <div className=" text-center">
+              <span className="text-lg md:text-xl line-clamp-1 font-semibold">
+                Artist Showcase:
+              </span>
 
-            <span className="text-md md:text-base">Tuesdays 7pm-930</span>
-          </div>
+              <span className="text-md md:text-base">Tuesdays 7pm-930</span>
+            </div>
+          )}
 
           <div className="text-xl text-center mt-4 mb-16">
             <Link
