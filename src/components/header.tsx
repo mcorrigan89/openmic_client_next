@@ -20,7 +20,7 @@ export function Header() {
         </Link>
       </div>
       <div className="flex flex-col gap-2 mx-12">
-        <p className="font-semibold text-lg">OpenMic: MONDAYS 6pm-11</p>
+        <p className="font-semibold text-lg">OpenMic: MONDAYS 6pm-10:30</p>
         <p className="text-md">
           (Signup via text on SUNDAYS at NOON: (651-334-3433){" "}
         </p>

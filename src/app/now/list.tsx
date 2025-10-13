@@ -82,7 +82,7 @@ export function ListComponent({ event, dateString }: ListProps) {
                 OpenMic:
               </span>
 
-              <span className="text-md md:text-base">Mondays 6pm-11</span>
+              <span className="text-md md:text-base">Mondays 6pm-10:30</span>
             </div>
           )}
           {data.event_type !== "OPEN_MIC_FAIR" && (
