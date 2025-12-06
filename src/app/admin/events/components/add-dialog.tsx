@@ -65,9 +65,7 @@ export function AddEventDialog() {
                         Open Mic at Sociable Cider
                       </option>
                       <option value="ARTIST_SHOWCASE">Showcase</option>
-                      <option value="OPEN_MIC_FAIR">
-                        Open Mic at Fair State
-                      </option>
+                      <option value="OPEN_MIC_FAIR">Open Mic at BauHaus</option>
                     </Select>
                   </Field>
                 );

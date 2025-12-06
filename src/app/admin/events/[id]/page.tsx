@@ -34,7 +34,7 @@ export default async function AdminEventPage({ params }: EventPageProps) {
       eventType = "Artist Showcase";
       break;
     case "OPEN_MIC_FAIR":
-      eventType = "Open Mic at Fair State";
+      eventType = "Open Mic at BauHaus";
       break;
   }
 

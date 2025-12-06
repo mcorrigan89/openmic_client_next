@@ -30,7 +30,7 @@ export function EventListComponent({ event }: EventComponentProps) {
       eventTypeColor = "text-emerald-800 dark:text-emerald-500";
       break;
     case "OPEN_MIC_FAIR":
-      eventType = "Open Mic at Fair State";
+      eventType = "Open Mic at BauHaus";
       eventTypeColor = "text-blue-800 dark:text-blue-500";
       break;
   }
